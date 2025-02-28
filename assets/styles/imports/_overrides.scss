@@ -1,0 +1,14 @@
+@use "variables";
+
+.select2-selection{
+  border: 1px solid #dee2e6 !important;
+  &__choice {
+    background-color: variables.$background-dark !important;
+    color: white;
+    padding-left: 20px !important;
+    font-size: variables.$font-size-sm;
+    &__remove {
+      height: 100%;
+    }
+  }
+}

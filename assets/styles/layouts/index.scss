@@ -1,0 +1,12 @@
+@forward "../imports/variables";
+@forward "../imports/reset";
+@use "navbar";
+@use "content";
+@use "list";
+@use "edit";
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}

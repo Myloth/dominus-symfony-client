@@ -1,0 +1,1 @@
+{"base_url":"","routes":{"admin_user_gen-secret-key":{"tokens":[["text","\/admin\/user\/user\/gen-secret-key"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":""}

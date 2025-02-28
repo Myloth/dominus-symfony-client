@@ -1,0 +1,96 @@
+@use "../imports/variables";
+@use "../imports/mixins";
+
+.page-header {
+    background: variables.$background-white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+
+    h1 {
+        color: variables.$text-dark;
+        font-size: 1.8em;
+        margin: 0;
+    }
+
+    .page-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .btn-primary {
+          @include mixins.nav-button;
+          background: rgb(38, 137, 170);
+        }
+
+        .btn-secondary {
+            @include mixins.nav-button;
+        }
+    }
+}
+
+.search-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: variables.$background-white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+    .search-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        inline-size: 100%; // Prendre toute la largeur de la section
+
+    }
+
+    .form-row {
+        display: flex;
+        flex: 1;
+        gap: 10px;
+    }
+
+    .form-group {
+        flex: 1 1 calc(25% - 10px); // 4 colonnes avec espacement
+        margin-bottom: 15px;
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: variables.$text-dark;
+        }
+        input, select {
+            padding: 8px;
+            border: 1px solid variables.$border-color;
+            border-radius: 4px;
+            width: 100%;
+        }
+        input[readonly] {
+            background-color: #f5f5f5;
+            border-color: #e0e0e0;
+            cursor: not-allowed;
+            color: #666;
+        }
+    }
+
+    .search-actions {
+        flex: 1 1 100%; // S'assurer que le bouton de recherche occupe toute la largeur
+        display: flex;
+        justify-content: flex-end;
+        
+        .btn-primary {
+            @include mixins.nav-button;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    }
+}

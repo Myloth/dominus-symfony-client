@@ -1,0 +1,36 @@
+<section class="search-section">
+    <form id="searchForm" class="search-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="searchName">Nom</label>
+                <input type="text" id="searchName" name="name" placeholder="Rechercher par nom">
+            </div>
+            <div class="form-group">
+                <label for="searchEmail">Email</label>
+                <input type="email" id="searchEmail" name="email" placeholder="Rechercher par email">
+            </div>
+            <div class="form-group">
+                <label for="searchGroup">Groupe</label>
+                <select id="searchGroup" name="group">
+                    <option value="">Tous les groupes</option>
+                    <option value="admin">Administrateur</option>
+                    <option value="user">Utilisateur</option>
+                    <option value="manager">Manager</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="searchStatus">Statut</label>
+                <select id="searchStatus" name="status">
+                    <option value="">Tous les statuts</option>
+                    <option value="active">Actif</option>
+                    <option value="inactive">Inactif</option>
+                </select>
+            </div>
+        </div>
+        <div class="search-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
+        </div>
+    </form>
+</section>

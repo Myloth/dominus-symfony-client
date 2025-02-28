@@ -1,0 +1,37 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/user/edit.html.twig' %}
+
+{% block editUserForm %}
+    {{ form_start(form) }}
+    <div class="row col-md-12 pt-2 pb-2">
+        {{ form_row(form.active) }}
+    </div>
+    <div class="row col-md-12 pt-2 pb-2">
+        <div class="col-md-2 d-inline">
+            {{ form_label(form.email) }}
+        </div>
+        <div class="col-md-3 d-inline">
+            {{ form_widget(form.email) }}
+        </div>
+        <div class="col-md-2 d-inline">
+            {{ form_label(form.password) }}
+        </div>
+        <div class="col-md-3 d-inline">
+            {{ form_widget(form.password) }}
+        </div>
+    </div>
+    <div class="row col-md-12 pt-2 pb-2">
+        <div class="col-md-1 d-inline">
+            {{ form_label(form.groups) }}
+        </div>
+        <div class="col-md-3 d-inline">
+            {{ form_widget(form.groups) }}
+        </div>
+    </div>
+    <div class="row col-md-12 pt-2 pb-2">
+        <div class="col-md-11 text-right float-right">
+            <button type="submit" class="btn btn-primary">{{ 'user.edit.submit' | trans }}</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

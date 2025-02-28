@@ -1,0 +1,13 @@
+navbar:
+  sidebar:
+    brand:
+      text: "Dominus"
+    dashboard:
+      text: "Tableau de bord"
+    administration:
+      text: "Administration"
+    users:
+      text: "Utilisateurs"
+topBar:
+  user_information:
+    text: "Informations utilisateur"

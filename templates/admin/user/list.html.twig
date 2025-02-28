@@ -1,0 +1,48 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>{{ 'user.listing.title' | trans }}</h1>
+        <div class="col-12 text-right ">
+            <a href="{{ path('admin_user_create') }}" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white">
+                    <i class="fas fa-arrow-right"> </i>
+                </span>
+                <span class="text">{{ 'user.listing.button.add' | trans }}</span>
+            </a>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered dataTable" id="user_datatable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>{{ 'user.listing.header.nickname' | trans }}</th>
+                            <th>{{ "user.listing.header.active" | trans }}</th>
+                            <th>{{ "user.listing.header.actions" | trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr {% if (user.type is same as constant('App\\Entity\\User\\AbstractUser::USER_TYPE_API')) %} class="bg-warning" {% endif %}>
+                            <td><a href="{{ path('admin_user_edit', {'user': user.id}) }}">{{ user.id }}</a></td>
+                            <td>{{ user.username }}</td>
+                            <td>
+                                <i class="fas fa-solid {% if user.active %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %}"></i>
+                            </td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('listing') }}
+{% endblock %}

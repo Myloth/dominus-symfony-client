@@ -1,0 +1,44 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/base.html.twig' %}
+{% set page_title = 'roles.listing.title' | trans %}
+
+{% block pageActions %}
+    <div class="page-actions">
+        <a href="/edit-user.html" class="btn-primary">
+            <i class="fas fa-plus"></i> Nouveau
+        </a>
+        <button class="btn-secondary" id="exportBtn">
+            <i class="fas fa-file-export"></i> Exporter
+        </button>
+        <div class="dropdown">
+            <button class="btn-primary dropdown-toggle" id="bulkActionsBtn" disabled>
+                <i class="fas fa-cog"></i> Actions
+            </button>
+            <div class="dropdown-menu">
+                <button class="dropdown-item text-danger" id="bulkDeactivate">
+                    <i class="fas fa-ban"></i> Désactiver
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageContent %}
+    {%  include 'admin/user/role/_search-form.html.twig' %}
+
+    <section class="users-section">
+        <table id="datatable" class="display">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>{{ 'roles.listing.header.nickname' | trans }}</th>
+                <th>{{ "roles.listing.header.actions" | trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Les données seront insérées dynamiquement par DataTables -->
+            </tbody>
+        </table>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+groups:
+  listing:
+    title: "Liste des groupes"
+    button:
+      add: "Ajouter un groupe"
+    header:
+      nickname: "Surnom"
+      actions: "Actions"

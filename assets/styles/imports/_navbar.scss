@@ -1,0 +1,94 @@
+@use "variables";
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  background-color: variables.$background-dark;
+  color: variables.$text-light;
+  padding: 20px;
+  height: 100vh;
+
+  &-logo {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    img {
+      max-width: 150px;
+    }
+  }
+
+  &-user-info {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .user-avatar {
+      i {
+        font-size: 2.5em;
+      }
+    }
+
+    .username {
+      font-weight: bold;
+    }
+
+    .user-group {
+      font-size: 0.8em;
+      opacity: 0.8;
+    }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      color: variables.$text-light;
+      cursor: pointer;
+      padding: 5px;
+    }
+  }
+
+  .nav-menu {
+    margin-top: 20px;
+
+    .nav-section {
+      h3 {
+        font-size: 0.9em;
+        text-transform: uppercase;
+        margin: 20px 0 10px;
+        opacity: 0.7;
+      }
+
+      .nav-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .nav-item-content {
+        padding-left: 20px;
+      }
+
+      .nav-item-content {
+        a {
+          display: block;
+          padding: 8px 10px;
+          color: variables.$text-light;
+          text-decoration: none;
+          font-size: 0.9em;
+
+          &:hover, &:active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
+}

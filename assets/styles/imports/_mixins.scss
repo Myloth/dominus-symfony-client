@@ -1,0 +1,12 @@
+@use "../imports/variables";
+
+@mixin nav-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: variables.$primary-color;
+    color: white;
+    font-size: 14px;
+}

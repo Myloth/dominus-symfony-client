@@ -1,0 +1,29 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/user/edit.html.twig' %}
+
+{% block editUserForm %}
+    {{ form_start(form) }}
+    <div class="row col-md-12 pt-2 pb-2">
+        {{ form_row(form.active) }}
+    </div>
+    <div class="row col-md-12 pt-2 pb-2">
+        <div class="col-md-2 d-inline">
+            {{ form_label(form.salt) }}
+        </div>
+        <div class="col-md-6 d-inline">
+            {{ form_widget(form.salt) }}
+        </div>
+    </div>
+    <div class="row col-md-12 pt-2 pb-5">
+        <div class="col-md-8 text-right float-right">
+            <button class="btn btn-success" id="gen-token">{{ 'user.edit.button.api.generate_token' | trans }}</button>
+            <button class="btn btn-success" id="gen_key">{{ 'user.edit.button.api.generate_key' | trans }}</button>
+        </div>
+    </div>
+    <div class="row col-md-12 pt-2 pb-2">
+        <div class="col-md-11 text-right float-right">
+            <button type="submit" class="btn btn-primary">{{ 'user.edit.submit' | trans }}</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="border-bottom-secondary px-3">
+        <h1>{{ 'user.new.title' | trans }}</h1>
+    </div>
+    <div class="col-md-12 mt-2">
+        <div class="card shadow mb4">
+            <div class="card-header py-3">
+                {{ 'user.new.card.header' | trans }}
+            </div>
+
+            {% for message in app.flashes('error') %}
+                <div class="alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row col-md-12 pt-2 pb-2">
+                    <div class="col-md-2 d-inline">
+                        {{ form_label(form.userType) }}
+                    </div>
+                    <div class="col-md-3 d-inline">
+                        {{ form_widget(form.userType) }}
+                    </div>
+                </div>
+                <div class="row col-md-12 pt-2 pb-2">
+                    <div class="col-md-2 d-inline">
+                        {{ form_label(form.username) }}
+                    </div>
+                    <div class="col-md-4 d-inline">
+                        {{ form_widget(form.username) }}
+                    </div>
+                    <div class="row col-md-12 pt-2 pb-2">
+                        <div class="col-md-11 text-right float-right">
+                            <button type="submit" class="btn btn-primary">{{ 'user.new.submit' | trans }}</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

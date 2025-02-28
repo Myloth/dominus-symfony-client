@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "es2015",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./public/js",
+    "rootDirs": ["./assets/ts", "./vendor/**/ts/*"],
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types"],
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "./node_modules/fos-router/ts/router.d.ts"
+  ]
+}
