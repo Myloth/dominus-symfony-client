@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-
+use App\Form\Search\User\GroupSearchType;
 /**
  * Class GroupController
  */
@@ -34,17 +34,22 @@ class GroupController extends AbstractController
     #[Route('/list')]
     public function list(GroupClient $groupClient)
     {
+        $searchForm = $this->buildSearchForm();
         $groups = $this->groupClient->getAll();
 
-        return $this->render('admin/user/groups/list.html.twig', ['groups' => $groups]);
+        return $this->render('admin/user/groups/list.html.twig', ['groups' => $groups, 'searchForm' => $searchForm]);
     }
 
     #[Route('/load', name: 'load', options:['expose' => true])]
     public function load(GroupClient $groupClient, Request $request): JsonResponse
     {
         $groups = $this->groupClient->getAll();
-
-        return  new JsonResponse($this->renderData($groups));
+        return new JsonResponse([
+            'data' => $this->renderData($groups),
+            'recordsTotal' => count($groups),
+            'recordsFiltered' => count($groups)
+            ]
+        );
 
     }
 
@@ -55,7 +60,10 @@ class GroupController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->groupClient->create($form->getData());
+            dump('here');
+            $group = $this->groupClient->create($form->getData());
+
+            return new JsonResponse(['id' => $group->id]);
         }
 
         return $this->render(
@@ -66,7 +74,7 @@ class GroupController extends AbstractController
     }
 
 
-    private function  renderData(array $groups)
+    private function renderData(array $groups)
     {
         $results = [];
         /** @var Group $group */
@@ -80,6 +88,7 @@ class GroupController extends AbstractController
 
             $results[] = $line;
         }
+
         return $results;
     }
 
@@ -92,5 +101,16 @@ class GroupController extends AbstractController
         });
 
         return $this->createForm(GroupType::class, $group, $formOptions);
+    }
+
+    private function buildSearchForm(): FormInterface
+    {
+        $formOptions = ['roles' => []];
+        $roles = $this->roleClient->getAll();
+        array_walk($roles, function($value) use (&$formOptions) {
+            $formOptions['roles'][$value->apiId] = $value->code;
+        });
+        
+        return $this->createForm(GroupSearchType::class, null, $formOptions);
     }
 }

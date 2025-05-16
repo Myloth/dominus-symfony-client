@@ -11,6 +11,7 @@ framework:
                 base_uri: '%env(DOMINUS_API_ENDPOINT)%'
                 headers:
                     Accept: 'application/ld+json'
+                    Content-Type: 'application/ld+json'
 
     default_locale: fr
     translator:

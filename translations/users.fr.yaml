@@ -4,5 +4,10 @@ groups:
     button:
       add: "Ajouter un groupe"
     header:
-      nickname: "Surnom"
+      id: "ID"
+      name: "Nom du groupe"
+      roles: "Roles"
       actions: "Actions"
+    form:
+      name: "Nom"
+      roleCode: "Role"

@@ -2,12 +2,15 @@
 
 namespace App\Dto\Users;
 
-use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotatio as JMS;;
 
 class Role
 {
-    #[SerializedName('@id')]
-    public string $apiId;
-    public int $id;
-    public string $code;
+    #[JMS\SerializedName('@id')]
+    #[JMS\Type('string')]
+    public ?string $apiId = null;
+    #[JMS\Type('integer')]
+    public ?int $id = null;
+    #[JMS\Type('string')]
+    public ?string $code = null;
 }
