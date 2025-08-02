@@ -1,6 +1,17 @@
 {
+
+  "include": [
+    "./assets/ts/**/*",
+    "./vendor/**/ts/*",
+    "./node_modules/fos-router/ts/router.d.ts"
+  ],
+  "exclude": [
+    "./public/js",
+    "vendor/**/**.test-d.ts"
+  ],
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2017",
+    "lib": ["ES2017", "DOM"],
     "module": "es2015",
     "strict": true,
     "esModuleInterop": true,
@@ -12,9 +23,7 @@
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types"],
     "allowJs": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["jquery"]
   },
-  "include": [
-    "./node_modules/fos-router/ts/router.d.ts"
-  ]
 }

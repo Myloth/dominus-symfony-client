@@ -21,7 +21,7 @@ class AbstractClient
 
     }
 
-    public function request(string $method, string $uri, string $type, array $options = []): mixed
+    public function request(string $method, string $uri, ?string $type, array $options = []): mixed
     {
         try {
             $response = $this->dominusClient->request($method, $uri, $options);

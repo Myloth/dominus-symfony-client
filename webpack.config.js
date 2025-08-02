@@ -29,8 +29,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/ts/app.ts')
-    .addEntry('user-listing', './assets/user-listing.js')
     .addEntry('group-edit', './assets/ts/group-edit.ts')
+    .addEntry('group-list', './assets/ts/group-list.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -80,7 +80,6 @@ Encore
     .autoProvidejQuery()
     .autoProvideVariables(
         {
-            'Datatable': 'datatable.net-dt',
             'Translator': 'bazinga-translator',
             'translations': __dirname + '/public/translations/fr.json',
         }

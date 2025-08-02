@@ -1,1 +1,7 @@
 @use "../imports/variables";
+@use "../imports/mixins";
+
+.btn-danger {
+    @include mixins.nav-button;
+    background-color: red;
+}

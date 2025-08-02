@@ -23,7 +23,7 @@ import Datatable from 'datatables.net-dt';
  *  }
  */
 const DataList = DataList || {
-
+ 
     datatable: undefined,
     pageOptions: {
         exportDataLinkId: "#export_data",
