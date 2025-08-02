@@ -1,4 +1,4 @@
-import { Config } from "datatables.net";
+import { Config } from "datatables.net-dt";
 import { ListPage } from "./classes/ListPage";
 import { ListPageOptions } from "./types/ListPageOptions";
 

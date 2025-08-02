@@ -1,7 +1,7 @@
 import Routing from 'fos-router'
 import $ from "jquery";
-import 'datatables.net'
-import type { Config, Api } from 'datatables.net'
+import 'datatables.net-dt'
+import type { Config, Api } from 'datatables.net-dt'
 import { ListPageOptions } from '../types/ListPageOptions';
 
 export class ListPage {
@@ -39,7 +39,7 @@ export class ListPage {
                 }
             },
             autoWidth: false,
-            dom: "<'row col-md-12'<'col-md-4 inline'l><'col-sm-3'i><'col-sm-5'<'float-right'p>>>",
+//            dom: "<'row col-md-12'<'col-md-4 inline'l><'col-sm-3'i><'col-sm-5'<'float-right'p>>>",
             pageLength: 50,
             info: true,
             language: {
@@ -70,7 +70,7 @@ export class ListPage {
 
     initDefaultPageOptions(customPageOptions: object | null): ListPageOptions
     {
-        const defaultPageOptions =  {
+        const defaultPageOptions = {
             exportDataLinkId: "#export_data",
             exportModalTitle: '',
             toggleElementRouteName: '',
@@ -100,7 +100,7 @@ export class ListPage {
     {
         let form = $(`form[name=${this.pageOptions.searchFilterFormName}]`);
         form.trigger('reset');
-        form.find('.select2').val([]).change(); // resets for multiple select2
+        form.find('.select2').val([]).trigger('change'); // resets for multiple select2
         this.redraw()
     }
 }

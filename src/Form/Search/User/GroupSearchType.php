@@ -18,7 +18,7 @@ class GroupSearchType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'groups.listing.form.name'])
             ->add(
-                'roleCode',
+                'roles',
                 ChoiceType::class,
                 [
                     'choices' => array_flip($options['roles']),

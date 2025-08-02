@@ -12,6 +12,7 @@
         "friendsofsymfony/jsrouting-bundle": "^3.5.2",
         "jms/serializer": ">=3.32.4",
         "jms/serializer-bundle": ">=5.5.1",
+        "nelmio/cors-bundle": "^2.5",
         "symfony/console": "^7.2.5",
         "symfony/dotenv": "^7.2",
         "symfony/flex": "^2.5.0",

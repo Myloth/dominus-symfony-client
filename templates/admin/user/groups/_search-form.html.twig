@@ -6,17 +6,16 @@
             {{ form_widget(searchForm.name) }}
         </div>
         <div class="form-group">
-            {{ form_label(searchForm.roleCode) }}
-            {{ form_widget(searchForm.roleCode) }}
+            {{ form_label(searchForm.roles) }}
+            {{ form_widget(searchForm.roles) }}
         </div>
     </div>
     {{ form_end(searchForm) }}
-        <div class="search-actions">
-            <a class="btn-danger" id="data_reset">Vider le formulaire</a>
+    <div class="search-actions">
+        <a class="btn-danger" id="data_reset">Vider le formulaire</a>
 
-            <button type="submit" class="btn-primary" id="data_search">
-                <i class="fas fa-search"></i> Rechercher
-            </button>
-        </div>
-    </form>
+        <button type="submit" class="btn-primary" id="data_search">
+            <i class="fas fa-search"></i> Rechercher
+        </button>
+    </div>
 </section>

@@ -1,6 +1,7 @@
 import { CanEdit } from "../interfaces/CanEdit";
 import Routing from "fos-router";
 import {EditParams} from "../types/EditParams";
+import $ from "jquery";
 
 export class EditPage implements CanEdit {
     private form: HTMLFormElement;
@@ -19,12 +20,12 @@ export class EditPage implements CanEdit {
 
     save(): void {
         let route: string = Routing.generate(this.saveRoute, this.saveParams)
-        let data = new FormData(this.form);
+        let formData = new FormData(this.form);
 
         $.ajax({
             url: route,
             method: 'POST',
-            data: data,
+            data: formData,
             processData: false,
             contentType: false,
             success: function (data) {
@@ -32,9 +33,9 @@ export class EditPage implements CanEdit {
                 let params = this.saveParams;
                 params.id = result.id as number;
                 
-                window.location.href = Routing.generate(this.data, params);
+                window.location.href = Routing.generate(data, params);
             },
-            error: function (xhr, status, error) {
+            error: function (xhr: JQuery.jqXHR, status: string, error: string) {
                 console.log(error);
             }
         });

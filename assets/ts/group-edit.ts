@@ -21,4 +21,3 @@ class GroupEdit {
 }
 
 new GroupEdit();
-

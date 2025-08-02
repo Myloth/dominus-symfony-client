@@ -3,7 +3,6 @@ import routes from '../../public/routes/fos_js_routes.json';
 import "select2";
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'select2/dist/css/select2.min.css';
-import 'datatables.net-dt/css/dataTables.dataTables.css';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../styles/app.scss';
 import $ from "jquery";

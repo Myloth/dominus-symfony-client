@@ -2,7 +2,7 @@
 
 namespace App\Dto\Users;
 
-use JMS\Serializer\Annotatio as JMS;;
+use JMS\Serializer\Annotation as JMS;
 
 class Role
 {

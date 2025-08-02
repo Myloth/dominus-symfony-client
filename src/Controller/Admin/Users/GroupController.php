@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\Search\User\GroupSearchType;
+use App\Dto\Users\GroupSearch;
+use JMS\Serializer\SerializerInterface;
+
+
+
 /**
  * Class GroupController
  */
@@ -25,7 +30,8 @@ class GroupController extends AbstractController
 {
     public function __construct(
         private readonly GroupClient $groupClient,
-        private readonly RoleClient $roleClient
+        private readonly RoleClient $roleClient,
+        private readonly SerializerInterface $serializer,
     ) {
 
     }
@@ -43,7 +49,10 @@ class GroupController extends AbstractController
     #[Route('/load', name: 'load', options:['expose' => true])]
     public function load(GroupClient $groupClient, Request $request): JsonResponse
     {
-        $groups = $this->groupClient->getAll();
+        $searchParams = $this->initSearch($request, GroupSearch::class);
+
+        $groups = $this->groupClient->find($searchParams);
+
         return new JsonResponse([
             'data' => $this->renderData($groups),
             'recordsTotal' => count($groups),
@@ -60,7 +69,6 @@ class GroupController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump('here');
             $group = $this->groupClient->create($form->getData());
 
             return new JsonResponse(['id' => $group->id]);
@@ -112,5 +120,34 @@ class GroupController extends AbstractController
         });
         
         return $this->createForm(GroupSearchType::class, null, $formOptions);
+    }
+
+    private function initSearch(Request $request, string $searchObject): object
+    {
+        // Prepare filters
+        $parsedFilters = [];
+        $filters = $request->request->get('filters', '');
+        parse_str($filters, $parsedFilters);
+
+        $searchFilters = array_shift($parsedFilters);
+
+        $search = new $searchObject();
+        if (!empty($searchFilters)) {
+            // Clean filters
+            $searchFilters = array_filter($searchFilters, function ($value) {
+                return $value !== null && $value !== false && $value !== '';
+            });
+
+            $search = $this->serializer->deserialize(json_encode($searchFilters), $searchObject, 'json');
+        }
+
+        // Add GET parameters if provided
+        foreach ($request->query->all() as $key => $value) {
+            if (property_exists($search, $key)) {
+                $search->$key = $value;
+            }
+        }
+
+        return $search;
     }
 }
