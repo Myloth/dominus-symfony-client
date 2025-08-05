@@ -1,17 +1,27 @@
 services:
   dominus-admin:
     build:
-      context: ./docker/php
-    volumes:
-      - ./:/var/www/dominus-admin
-    ports:
-      - "9001:9000"
-    user: "www-data"
+      context: docker/frankenphp
+    restart: unless-stopped
     environment:
-      SYMFONY_ENV: dev
-      APP_ENV: dev
-      INIT_XDEBUG_ACTIVATED: 1
+      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
+      MERCURE_URL: ${CADDY_MERCURE_URL:-http://php/.well-known/mercure}
+      MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}/.well-known/mercure}
+      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       DOMINUS_API_ENDPOINT: http://dominus-api-api-nginx-1
+    volumes:
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./docker/frankenphp/Caddyfile:/etc/frankenphp/Caddyfile
+      - ./docker/frankenphp/conf.d/10-app.ini:/usr/local/etc/php/app.conf.d/10-app.ini:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
+      - "traefik.http.routers.dominus-admin.entrypoints=web"
+      - "traefik.http.services.dominus-admin.loadbalancer.server.port=443"
     networks:
       - dominus-network
 
@@ -27,24 +37,10 @@ services:
     networks:
       - dominus-network
 
-  da-nginx:
-    image: nginx:stable-alpine
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
-      - "traefik.http.routers.dominus-admin.entrypoints=websecure"
-      - "traefik.http.routers.dominus-admin.tls.certresolver=le"
-    volumes:
-      - ./:/var/www/dominus-admin
-      - ./docker/nginx/dominus-admin.conf:/etc/nginx/conf.d/default.conf
-      - ./docker/nginx/certificates:/etc/nginx/certificates
-    depends_on:
-      - dominus-admin
-    networks:
-      - dominus-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
 networks:
   dominus-network:
     external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
