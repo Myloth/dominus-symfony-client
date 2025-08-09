@@ -20,8 +20,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
-      - "traefik.http.routers.dominus-admin.entrypoints=web"
-      - "traefik.http.services.dominus-admin.loadbalancer.server.port=443"
+      - "traefik.http.routers.dominus-admin.entrypoints=websecure"
+      - "traefik.http.routers.dominus-admin.tls=true"
+      - "traefik.http.routers.dominus-admin.tls.certresolver=le"
+      - "traefik.http.services.dominus-admin.loadbalancer.server.port=80"
     networks:
       - dominus-network
 
