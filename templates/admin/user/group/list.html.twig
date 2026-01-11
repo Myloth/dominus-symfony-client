@@ -1,0 +1,37 @@
+{% trans_default_domain 'users' %}
+{% extends 'admin/base.html.twig' %}
+{% set page_title = 'groups.listing.title' | trans %}
+
+{% block pageActions %}
+    <div class="page-actions">
+        <a href="{{ path('admin_users_group_new') }}" class="btn-primary">
+            <i class="fas fa-plus"></i> Nouveau
+        </a>
+    </div>
+{% endblock %}
+
+{% block pageContent %}
+    {%  include 'admin/user/group/_search-form.html.twig' %}
+
+    <section class="list-section">
+        <table id="datatable" class="table table-bordered dataTable table-fixed table-hover">
+            <thead>
+            <tr>
+                <th>{{ 'groups.listing.header.id' | trans }}</th>
+                <th>{{ 'groups.listing.header.name' | trans }}</th>
+                <th>{{ "groups.listing.header.roles" | trans }}</th>
+                <th>{{ "groups.listing.header.actions" | trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Les données seront insérées dynamiquement par DataTables -->
+            </tbody>
+        </table>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('group-list') }}
+{% endblock %}

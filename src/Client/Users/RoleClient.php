@@ -9,6 +9,6 @@ class RoleClient extends AbstractClient
 {
     public function getAll()
     {
-        return $this->request('GET', 'roles', 'array<'.Role::class.'>');
+        return $this->request('GET', 'roles', Role::class.'[]');
     }
 }

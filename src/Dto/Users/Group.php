@@ -2,18 +2,15 @@
 
 namespace App\Dto\Users;
 
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 class Group
 {
-    #[JMS\SerializedName("@id")]
+    #[Serializer\SerializedName("@id")]
     public ?string $apiId = null;
-    #[JMS\Type("integer")]
     public ?int $id = null;
-    #[JMS\Type("string")]
     public ?string $name = null;
-    #[JMS\Type("string")]
     public ?string $slug = null;
-    #[JMS\Type("array<App\Dto\Users\Role>")]
+    /** @var list<Role>  */
     public ?array $roles = [];
 }

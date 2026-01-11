@@ -14,12 +14,12 @@ class GroupClient extends AbstractClient
 {
     public function find(GroupSearch $groupSearch) 
     {
-        return $this->request('GET', '/groups', 'array<'.Group::class.'>', ['query' => $groupSearch->getFilters()] );
+        return $this->request('GET', '/groups', Group::class.'[]', ['query' => $groupSearch->getFilters()] );
     }
 
     public function getAll()
     {
-        return $this->request('GET', '/groups', 'array<'.Group::class.'>');
+        return $this->request('GET', '/groups', Group::class.'[]');
     }
 
     public function create(Group $group)

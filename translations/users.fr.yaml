@@ -11,3 +11,48 @@ groups:
     form:
       name: "Nom"
       roleCode: "Role"
+  create:
+    title: "Créer un groupe"
+  edit:
+    title: "Modifier le groupe %group%"
+
+users:
+  listing:
+    title: "Liste des utilisateurs"
+    button:
+      add: "Ajouter un utilisateur"
+    header:
+      id: "ID"
+      name: "Nom"
+      group: "Groupe"
+      actions: "Actions"
+    form:
+      name: "Nom"
+      group: "Groupe"
+  form:
+    username: "Nom d'utilisateur"
+    email: "Adresse email"
+    password: "Mot de passe"
+    password.help: "Laissez vide pour conserver le mot de passe actuel"
+    username.not_blank: "Le nom d'utilisateur est obligatoire"
+    email.not_blank: "L'adresse email est obligatoire"
+    email.invalid: "L'adresse email n'est pas valide"
+    groups: "Groupe"
+  create:
+    title: "Créer un utilisateur"
+  edit:
+    title: "Modifier l'utilisateur %user%"
+
+common:
+  actions:
+    new: "Nouveau"
+    save: "Enregistrer"
+    cancel: "Annuler"
+    back: "Retour"
+    search: "Rechercher"
+    reset: "Vider le formulaire"
+  tabs:
+    general: "Général"
+  help:
+    title: "Aide"
+    edit: "Modifier l'aide"
