@@ -1,15 +1,26 @@
 import Routing from "fos-router";
-import routes from '../../public/routes/fos_js_routes.json';
-import "select2";
+import TomSelect from "tom-select";
 import '@fortawesome/fontawesome-free/css/all.css';
-import 'select2/dist/css/select2.min.css';
+import 'tom-select/dist/css/tom-select.default.min.css';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../styles/app.scss';
-import $ from "jquery";
-import Translator from "bazinga-translator";
-import translations from '../../public/translations/fr.json';
 
-Routing.setRoutingData(routes);
+import Translator from "bazinga-translator";
+
+if ((window as any).Routing) {
+    const globalRouting = (window as any).Routing;
+    Routing.setBaseUrl(globalRouting.getBaseUrl());
+    Routing.setRoutes(globalRouting.getRoutes());
+    Routing.setScheme(globalRouting.getScheme());
+    Routing.setHost(globalRouting.getHost());
+    Routing.setPort(globalRouting.getPort());
+    Routing.setLocale(globalRouting.getLocale());
+    if ((globalRouting as any).context_ && (globalRouting as any).context_.prefix) {
+        Routing.setPrefix((globalRouting as any).context_.prefix);
+    }
+}
+
+
 fetch('/translations/fr.json')
     .then(response => response.text())
     .then(translations => {
@@ -20,7 +31,11 @@ fetch('/translations/fr.json')
 
 
 
-// start the Stimulus application
-$(document).ready(function() {
-    $('.select2').select2({});
-})
+// Initialize Tom Select
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.select2').forEach((el) => {
+        new TomSelect(el, {
+            plugins: ['remove_button']
+        });
+    });
+});

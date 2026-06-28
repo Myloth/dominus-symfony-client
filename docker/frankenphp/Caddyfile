@@ -1,5 +1,8 @@
 {
 	skip_install_trust
+	servers {
+		trusted_proxies static private_ranges
+	}
 
 	{$CADDY_GLOBAL_OPTIONS}
 

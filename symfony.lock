@@ -32,6 +32,9 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "sensiolabs/typescript-bundle": {
+        "version": "v0.2.2"
+    },
     "symfony/asset-mapper": {
         "version": "7.2",
         "recipe": {
@@ -234,9 +237,6 @@
     },
     "symfonycasts/sass-bundle": {
         "version": "v0.8.2"
-    },
-    "symfonycasts/tailwind-bundle": {
-        "version": "v0.6.1"
     },
     "twig/extra-bundle": {
         "version": "v3.18.0"

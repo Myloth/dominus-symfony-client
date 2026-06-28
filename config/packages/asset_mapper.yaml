@@ -6,7 +6,11 @@ framework:
         excluded_patterns:
             - '*/assets/styles/_*.scss'
             - '*/assets/styles/**/_*.scss'
+            - '**/sb-admin-2.scss'
         missing_import_mode: strict
+
+sensiolabs_typescript:
+    source_dir: ['%kernel.project_dir%/assets/ts']
 
 when@prod:
     framework:

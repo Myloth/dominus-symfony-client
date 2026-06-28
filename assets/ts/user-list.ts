@@ -1,6 +1,6 @@
 import { Config } from "datatables.net-dt";
-import { ListPage } from "./classes/ListPage";
-import { ListPageOptions } from "./types/ListPageOptions";
+import { ListPage } from "./classes/ListPage.ts";
+import { ListPageOptions } from "./types/ListPageOptions.ts";
 
 class UserList 
 {

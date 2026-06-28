@@ -32,6 +32,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('user-list') }}
+    {{ importmap(['app', 'user-list']) }}
 {% endblock %}

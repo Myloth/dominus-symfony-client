@@ -73,6 +73,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('group-edit') }}
+    {{ importmap(['app', 'group-edit']) }}
 {% endblock %}

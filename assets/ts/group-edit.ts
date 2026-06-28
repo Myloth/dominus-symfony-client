@@ -1,5 +1,5 @@
-import { EditParams} from "./types/EditParams";
-import { EditPage} from "./classes/EditPage";
+import { EditParams} from "./types/EditParams.ts";
+import { EditPage} from "./classes/EditPage.ts";
 
 class GroupEdit {
     constructor() {
