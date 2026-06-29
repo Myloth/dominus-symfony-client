@@ -1,7 +1,8 @@
 import { Config } from "datatables.net-dt";
 import { ListPage } from "./classes/ListPage.ts";
+import { ListPageOptions } from "./types/ListPageOptions.ts";
 
-class GroupList 
+class UserList 
 {
     constructor() {
         const datatableOptions: Config = {
@@ -11,19 +12,19 @@ class GroupList
             order: [[1, 'desc']],
             columns: [
                 {"data": "id"},
-                {"data": "name"},
-                {"data": "roles"},
+                {"data": "username"},
+                {"data": "groups"},
                 {"data": "actions"},
             ]
         };
 
         const pageOptions = {
-            dataLoadRouteName: 'admin_users_group_load',
-            searchFilterFormName: 'group_search'
+            dataLoadRouteName: 'admin_users_load',
+            searchFilterFormName: 'user_search'
         }
 
         new ListPage(datatableOptions, pageOptions);
     }
 }
 
-new GroupList();
+new UserList();

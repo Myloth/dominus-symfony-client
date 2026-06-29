@@ -2,7 +2,7 @@
 
 namespace App\Form\Search\User;
 
-use App\Dto\Users\GroupSearch;
+use App\Dto\Users\UserSearch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,23 +11,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 
-class GroupSearchType extends AbstractType
+class UserSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
         $builder
-            ->add('name', TextType::class, ['label' => 'groups.listing.form.name'])
+            ->add('name', TextType::class, ['label' => 'users.listing.form.name'])
             ->add(
-                'roles',
+                'group',
                 ChoiceType::class,
                 [
-                    'choices' => array_flip($options['roles']),
+                    'choices' => $options['groups'],
                     'multiple' => true,
                     'attr' => [
                         'class' => 'select2'
                     ],
-                    'label' => 'groups.listing.form.roleCode'
+                    'label' => 'users.listing.form.group'
                 ]
             )
         ;
@@ -36,8 +35,8 @@ class GroupSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => GroupSearch::class,
-            'roles' => [],
+            'data_class' => UserSearch::class,
+            'groups' => [],
             'csrf_protection' => false,
             'translation_domain' => 'users'
         ]);
@@ -45,6 +44,6 @@ class GroupSearchType extends AbstractType
 
     public function getBlockPrefix(): string 
     {
-        return 'group_search';
+        return 'user_search';
     }
 }

@@ -2,7 +2,7 @@ import Routing from 'fos-router'
 import $ from "jquery";
 import 'datatables.net-dt'
 import type { Config, Api } from 'datatables.net-dt'
-import { ListPageOptions } from '../types/ListPageOptions';
+import { ListPageOptions } from '../types/ListPageOptions.ts';
 
 export class ListPage {
     private datatable: Api<any>;
@@ -14,8 +14,16 @@ export class ListPage {
         this.datatableOptions = this.initDefaultDatatableConfig(datatableOptions);
         this.datatable = $((this.pageOptions.datatableContainerClass as string)).DataTable(this.datatableOptions);
 
-        $(document).on('click', this.pageOptions.dataSearchButtonId as string, () => this.redraw());
-        $(document).on('click', this.pageOptions.dataResetButtonId as string, () => this.resetSearchForm());
+        document.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            if (target) {
+                if (target.closest(this.pageOptions.dataSearchButtonId as string)) {
+                    this.redraw();
+                } else if (target.closest(this.pageOptions.dataResetButtonId as string)) {
+                    this.resetSearchForm();
+                }
+            }
+        });
     }
 
 
@@ -29,13 +37,18 @@ export class ListPage {
             ajax: {
                 type: "POST",
                 url: Routing.generate(pageOptions.dataLoadRouteName),
-                data: function (d) {
-                    return $.extend({}, d, {
-                        "filters": $(`form[name=${pageOptions.searchFilterFormName}]`).serialize(),
+                data: function (d: any) {
+                    const form = document.querySelector(`form[name=${pageOptions.searchFilterFormName}]`) as HTMLFormElement;
+                    const serialized = form ? new URLSearchParams(new FormData(form) as any).toString() : '';
+                    return Object.assign({}, d, {
+                        "filters": serialized,
                     });
                 },
                 complete: function (xhr) {
-                    $("#preloader").hide();
+                    const preloader = document.getElementById("preloader");
+                    if (preloader) {
+                        preloader.style.display = "none";
+                    }
                 }
             },
             autoWidth: false,
@@ -53,15 +66,21 @@ export class ListPage {
                 let deleted = row.querySelector('.deleted-item');
 
                 if (null !== deleted) {
-                    $(row).removeAttr('class');
-                    $(row).addClass('deleted');
+                    row.removeAttribute('class');
+                    row.classList.add('deleted');
                 }
             },
             preDrawCallback: function () {
-                $("#preloader").show();
+                const preloader = document.getElementById("preloader");
+                if (preloader) {
+                    preloader.style.display = "block";
+                }
             },
             drawCallback: function () {
-                $("#preloader").hide();
+                const preloader = document.getElementById("preloader");
+                if (preloader) {
+                    preloader.style.display = "none";
+                }
             }
         }
 
@@ -98,9 +117,15 @@ export class ListPage {
 
     resetSearchForm(): void
     {
-        let form = $(`form[name=${this.pageOptions.searchFilterFormName}]`);
-        form.trigger('reset');
-        form.find('.select2').val([]).trigger('change'); // resets for multiple select2
-        this.redraw()
+        const form = document.querySelector(`form[name=${this.pageOptions.searchFilterFormName}]`) as HTMLFormElement;
+        if (form) {
+            form.reset();
+            form.querySelectorAll<any>('.select2').forEach((select) => {
+                if (select.tomselect) {
+                    select.tomselect.clear();
+                }
+            });
+        }
+        this.redraw();
     }
 }

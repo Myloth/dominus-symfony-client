@@ -1,4 +1,13 @@
 {
+    "doctrine/deprecations": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "87424683adc81d7dc305eefec1fced883084aab9"
+        }
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "3.5",
         "recipe": {
@@ -9,18 +18,6 @@
         },
         "files": [
             "config/routes/fos_js_routing.yaml"
-        ]
-    },
-    "jms/serializer-bundle": {
-        "version": "5.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "4.0",
-            "ref": "cc04e10cf7171525b50c18b36004edf64cb478be"
-        },
-        "files": [
-            "config/packages/jms_serializer.yaml"
         ]
     },
     "nelmio/cors-bundle": {
@@ -34,6 +31,9 @@
         "files": [
             "config/packages/nelmio_cors.yaml"
         ]
+    },
+    "sensiolabs/typescript-bundle": {
+        "version": "v0.2.2"
     },
     "symfony/asset-mapper": {
         "version": "7.2",
@@ -128,6 +128,18 @@
         },
         "files": [
             "config/packages/monolog.yaml"
+        ]
+    },
+    "symfony/property-info": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.3",
+            "ref": "dae70df71978ae9226ae915ffd5fad817f5ca1f7"
+        },
+        "files": [
+            "config/packages/property_info.yaml"
         ]
     },
     "symfony/routing": {
@@ -225,9 +237,6 @@
     },
     "symfonycasts/sass-bundle": {
         "version": "v0.8.2"
-    },
-    "symfonycasts/tailwind-bundle": {
-        "version": "v0.6.1"
     },
     "twig/extra-bundle": {
         "version": "v3.18.0"

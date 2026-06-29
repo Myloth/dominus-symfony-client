@@ -1,0 +1,21 @@
+<section class="search-section">
+    {{ form_start(searchForm, {"attr": {"class": "search-form"}}) }}
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ form_label(searchForm.name) }}
+            {{ form_widget(searchForm.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(searchForm.group) }}
+            {{ form_widget(searchForm.group) }}
+        </div>
+    </div>
+    {{ form_end(searchForm) }}
+    <div class="search-actions">
+        <a class="btn-danger" id="data_reset">Vider le formulaire</a>
+
+        <button type="submit" class="btn-primary" id="data_search">
+            <i class="fas fa-search"></i> Rechercher
+        </button>
+    </div>
+</section>

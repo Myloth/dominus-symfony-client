@@ -1,7 +1,7 @@
 import { EditParams} from "./types/EditParams.ts";
 import { EditPage} from "./classes/EditPage.ts";
 
-class GroupEdit {
+class UserEdit {
     constructor() {
         let dataDiv = document.getElementById('dataDiv')
         if (dataDiv) {
@@ -11,8 +11,8 @@ class GroupEdit {
             let params: EditParams = {
                 saveButton: "saveButton",
                 editId: editId,
-                formName: "group",
-                saveRouteName: "admin_users_group_new"
+                formName: "user_edit",
+                saveRouteName: "admin_users_new"
             }
 
             new EditPage(params);
@@ -20,4 +20,4 @@ class GroupEdit {
     }
 }
 
-new GroupEdit();
+new UserEdit();

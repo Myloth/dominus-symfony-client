@@ -5,17 +5,17 @@ namespace App\Dto\Users;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use App\Dto\SearchDtoInterface;
 
-class GroupSearch implements SearchDtoInterface
+class UserSearch implements SearchDtoInterface
 {
+    public ?string $name = null;
 
-    public ?string $name  = null;
-    public array $roles = [];
+    public array $group = [];
 
     public function getFilters(): array
     {
         return [
             'name' => $this->name,
-            'roles' => $this->roles
+            'group' => $this->group
         ];
     }
 }

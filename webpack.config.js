@@ -31,6 +31,8 @@ Encore
     .addEntry('app', './assets/ts/app.ts')
     .addEntry('group-edit', './assets/ts/group-edit.ts')
     .addEntry('group-list', './assets/ts/group-list.ts')
+    .addEntry('user-list', './assets/ts/user-list.ts')
+    .addEntry('user-edit', './assets/ts/user-edit.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

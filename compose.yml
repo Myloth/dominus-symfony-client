@@ -11,6 +11,8 @@ services:
       MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}/.well-known/mercure}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       DOMINUS_API_ENDPOINT: http://dominus-api-dominus-api-1
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.1,REMOTE_ADDR}
+      SERVER_NAME: https://dominus-admin.localhost
     volumes:
       - ./:/app
       - caddy_data:/data
@@ -19,11 +21,25 @@ services:
       - ./docker/frankenphp/conf.d/10-app.ini:/usr/local/etc/php/app.conf.d/10-app.ini:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
-      - "traefik.http.routers.dominus-admin.entrypoints=websecure"
-      - "traefik.http.routers.dominus-admin.tls=true"
-      - "traefik.http.routers.dominus-admin.tls.certresolver=le"
-      - "traefik.http.services.dominus-admin.loadbalancer.server.port=80"
+#      - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
+#      - "traefik.http.routers.dominus-admin.entrypoints=websecure"
+#      - "traefik.http.routers.dominus-admin.tls=true"
+#      - "traefik.http.routers.dominus-admin.tls.certresolver=le"
+#      - "traefik.http.services.dominus-admin.loadbalancer.server.port=80"
+      # 1. Configuration du routeur TCP pour le HTTPS (Port 443)
+      - "traefik.tcp.routers.dominus-admin-https.rule=HostSNI(`dominus-admin.localhost`)"
+      - "traefik.tcp.routers.dominus-admin-https.entrypoints=websecure"
+      - "traefik.tcp.routers.dominus-admin-https.tls=true"
+      # Active la retransmission brute sans déchiffrement
+      - "traefik.tcp.routers.dominus-admin-https.tls.passthrough=true"
+      # Redirige vers le port HTTPS interne de FrankenPHP
+      - "traefik.tcp.services.dominus-admin-https.loadbalancer.server.port=443"
+
+      # 2. Configuration du routeur HTTP pour redirection automatique (Port 80)
+      - "traefik.http.routers.dominus-admin-http.rule=Host(`dominus-admin.localhost`)"
+      - "traefik.http.routers.dominus-admin-http.entrypoints=web"
+      # Redirige vers le port HTTP de FrankenPHP (qui gérera la redirection HTTP -> HTTPS)
+      - "traefik.http.services.dominus-admin-http.loadbalancer.server.port=80"
     networks:
       - dominus-network
 

@@ -1,0 +1,30 @@
+caddy:
+  auto_https: off
+
+listen: ":80"
+listen: ":443"
+
+static:
+  root: public
+  index: index.php
+  try_files: 
+    - "{path}"
+    - "/index.php"
+
+extensions:
+  - opcache
+  - apcu
+  - intl
+  - zip
+  - bcmath
+
+frankenphp:
+  workers:
+    enabled: true
+    command: "php"
+    script: "public/index.php"
+    reload:
+      strategy: "inotify"
+
+log:
+  level: "debug"

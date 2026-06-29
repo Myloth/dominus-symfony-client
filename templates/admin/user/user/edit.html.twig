@@ -3,26 +3,26 @@
 
 {% block pageActions %}
     <div class="page-actions">
-        <a href="/back.html" class="btn-secondary">Retour</a>
-        <button id="saveButton" class="btn-primary" type="submit">Enregistrer</button>
+        <a href="{{ path('admin_users_list') }}" class="btn-secondary">{{ 'common.actions.back' | trans }}</a>
+        <button id="saveButton" class="btn-primary" type="submit">{{ 'common.actions.save' | trans }}</button>
 
     </div>
 {% endblock %}
 
-{% if group is not defined %}
-    {% set page_title = 'groups.create.title' | trans %}
+{% if user is not defined %}
+    {% set page_title = 'users.create.title' | trans %}
 {% else %}
-    {% set page_title = 'groups.edit.title' | trans({'%group%': group.name}) %}
+    {% set page_title = 'users.edit.title' | trans({'%user%': user.username}) %}
 {% endif %}
 
 {% block pageContent %}
-    <div id="dataDiv" data-id="{% if group is not defined %}{% else %}{{ group.id }}{% endif %}"></div>
+    <div id="dataDiv" data-id="{% if user is not defined %}{% else %}{{ user.id }}{% endif %}"></div>
     <div class="content-wrapper">
         <!-- Section principale (2/3) -->
         <div class="main-section">
             <div class="tabs">
                 <ul class="tab-list">
-                    <li class="tab-item active" data-tab="general">Général</li>
+                    <li class="tab-item active" data-tab="general">{{ 'common.tabs.general' | trans }}</li>
                     <!-- Autres onglets peuvent être ajoutés ici -->
                 </ul>
             </div>
@@ -31,10 +31,18 @@
                 {{ form_start(form, {'attr': {'class': 'edit-form'}} ) }}
                 <div class="form-row">
                     <div class="form-group">
-                        {{ form_row(form.name) }}
+                        {{ form_row(form.username) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(form.roles, {'attr': {'class': 'select2'}}) }}
+                        {{ form_row(form.groups, {'attr': {'class': 'select2'}}) }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.password) }}
                     </div>
                 </div>
                 {{ form_end(form) }}
@@ -45,7 +53,7 @@
         <div class="help-section">
             <div class="help-content">
                 <div class="help-header">
-                    <h2>Aide</h2>
+                    <h2>{{ 'common.help.title' | trans }}</h2>
                     <button class="btn-edit-help" id="editHelpBtn">
                         <i class="fas fa-edit"></i>
                     </button>
@@ -63,8 +71,8 @@
                 <div class="help-edit hidden" id="helpEdit">
                     <textarea id="helpTextArea"></textarea>
                     <div class="help-edit-actions">
-                        <button class="btn-primary" id="saveHelpBtn">Enregistrer</button>
-                        <button class="btn-secondary" id="cancelHelpBtn">Annuler</button>
+                        <button class="btn-primary" id="saveHelpBtn">{{ 'common.actions.save' | trans }}</button>
+                        <button class="btn-secondary" id="cancelHelpBtn">{{ 'common.actions.cancel' | trans }}</button>
                     </div>
                 </div>
             </div>
@@ -73,6 +81,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('group-edit') }}
+    {{ importmap(['app', 'user-edit']) }}
 {% endblock %}
