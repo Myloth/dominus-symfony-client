@@ -44,6 +44,7 @@
         "symfony/twig-bridge": "^7.4.14",
         "symfony/twig-bundle": "^7.4.14",
         "symfony/type-info": "^7.4.9",
+        "symfony/ux-live-component": "^3.2",
         "symfony/validator": "^7.4.14",
         "symfony/var-exporter": "^7.4.14",
         "symfony/webpack-encore-bundle": ">=2.4.1",

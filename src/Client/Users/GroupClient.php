@@ -12,9 +12,13 @@ use App\Dto\Users\GroupSearch;
  */
 class GroupClient extends AbstractClient
 {
-    public function find(GroupSearch $groupSearch) 
+    public function find(GroupSearch $groupSearch, int $page = 1, int $itemsPerPage = 10): array
     {
-        return $this->request('GET', '/groups', Group::class.'[]', ['query' => $groupSearch->getFilters()] );
+        $query = array_merge($groupSearch->getFilters(), [
+            'page' => $page,
+            'itemsPerPage' => $itemsPerPage,
+        ]);
+        return $this->requestWithMeta('GET', '/groups', Group::class.'[]', ['query' => $query]);
     }
 
     public function getAll()

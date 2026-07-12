@@ -22,6 +22,16 @@ framework:
     #esi: true
     #fragments: true
 
+when@dev:
+    framework:
+        http_client:
+            scoped_clients:
+                dominus_client:
+                    verify_peer: false
+                    verify_host: false
+                    resolve:
+                        'api.dominus.localhost': '172.17.0.1'
+
 when@test:
     framework:
         test: true

@@ -1,0 +1,6 @@
+{% trans_default_domain 'users' %}
+{% for group in entity.groups %}
+    <span class="group-badge">{{ group.name }}</span>
+{% else %}
+    <span class="text-muted">-</span>
+{% endfor %}

@@ -16,11 +16,12 @@ class UserSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'users.listing.form.name'])
+            ->add('name', TextType::class, ['label' => 'users.listing.form.name', 'required' => false])
             ->add(
                 'group',
                 ChoiceType::class,
                 [
+                    'required' => false,
                     'choices' => $options['groups'],
                     'multiple' => true,
                     'attr' => [

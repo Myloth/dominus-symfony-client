@@ -51,4 +51,42 @@ class AbstractClient
 
         return $this->serializer->deserialize($response->getContent(), $type ?? 'array', 'json');
     }
+
+    public function requestWithMeta(string $method, string $uri, ?string $type, array $options = []): array
+    {
+        try {
+            $response = $this->dominusClient->request($method, $uri, $options);
+        } catch (HttpException $exception) {
+            $this->logger->error('Unable to join the API');
+            throw $exception;
+        }
+        if ($response->getStatusCode() >= 400) {
+            $this->logger->error(
+                'Unable to complete the request',
+                [
+                    'status_code' => $response->getStatusCode(),
+                ]
+            );
+
+            throw new HttpException($response->getStatusCode(), 'Unable to complete the request');
+        }
+
+        $data = json_decode($response->getContent(), true);
+        
+        $items = [];
+        if (isset($data['member'])) {
+            $items = $this->serializer->deserialize(
+                json_encode($data['member']),
+                $type ?? 'array',
+                'json'
+            );
+        } else {
+            $items = $this->serializer->deserialize($response->getContent(), $type ?? 'array', 'json');
+        }
+
+        return [
+            'items' => $items,
+            'totalItems' => $data['totalItems'] ?? count($items),
+        ];
+    }
 }

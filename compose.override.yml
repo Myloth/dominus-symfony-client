@@ -18,7 +18,8 @@ services:
       APP_ENV: "${APP_ENV:-dev}"
     extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
-      - host.docker.internal:host-gateway
+      - "host.docker.internal:host-gateway"
+      - "api.dominus.localhost:host-gateway"
     tty: true
 
 ###> symfony/mercure-bundle ###

@@ -15,7 +15,7 @@ class UserSearch implements SearchDtoInterface
     {
         return [
             'name' => $this->name,
-            'group' => $this->group
+            'groups' => $this->group
         ];
     }
 }

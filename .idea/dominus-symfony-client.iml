@@ -81,6 +81,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-icu" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/validator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/willdurand/js-translation-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

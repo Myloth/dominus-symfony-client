@@ -1,0 +1,32 @@
+{% extends 'components/datatables/base.html.twig' %}
+{% trans_default_domain 'users' %}
+
+{% block search_form %}
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block itemLines %}
+    {% for group in this.items %}
+        <tr>
+            <td>{{ group.id }}</td>
+            <td>{{ group.name }}</td>
+            <td>
+                {% for role in group.roles %}
+                    <span class="role-badge {% if 'ADMIN' in role.code %}role-admin{% endif %}">{{ role.code }}</span>
+                {% else %}
+                    <span class="text-muted">-</span>
+                {% endfor %}
+            </td>
+            <td></td>
+        </tr>
+    {% endfor %}
+{% endblock %}

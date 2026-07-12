@@ -1,0 +1,171 @@
+{% trans_default_domain 'users' %}
+<div {{ attributes }}>
+    <section class="search-section">
+        {{ form_start(form, {"attr": {
+            "class": "search-form",
+            "data-model": "norender|*",
+            "data-action": "live#action:prevent",
+            "data-live-action-param": "search"
+        }}) }}
+        {% block search_form %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.roles) }}
+                {{ form_widget(form.roles) }}
+            </div>
+        </div>
+        {% endblock %}
+        <div class="search-actions">
+            <button type="button" class="btn-danger" id="data_reset" data-action="live#action:prevent" data-live-action-param="reset">
+                Vider le formulaire
+            </button>
+
+            <button type="submit" class="btn-primary" id="data_search">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </section>
+
+    <section class="list-section">
+        <div class="table-controls mb-3">
+            <!-- Left: Select menu for items per page -->
+            <div class="dataTables_length">
+                <label class="d-inline-flex align-items-center gap-1 mb-0 small text-muted">
+                    Afficher
+                    <select class="form-select form-select-sm d-inline-block w-auto mx-1"
+                            data-model="norender|itemsPerPage">
+                        <option value="5" {% if this.itemsPerPage == 5 %}selected{% endif %}>5</option>
+                        <option value="10" {% if this.itemsPerPage == 10 %}selected{% endif %}>10</option>
+                        <option value="25" {% if this.itemsPerPage == 25 %}selected{% endif %}>25</option>
+                        <option value="50" {% if this.itemsPerPage == 50 %}selected{% endif %}>50</option>
+                        <option value="100" {% if this.itemsPerPage == 100 %}selected{% endif %}>100</option>
+                    </select>
+                    éléments
+                </label>
+            </div>
+
+            <!-- Right: Pagination -->
+            {% if this.pageCount >= 1 %}
+                <div class="dataTables_paginate paging_simple_numbers">
+                    <ul class="pagination pagination-sm mb-0">
+                        {# First Page #}
+                        {% if this.page == 1 %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link"
+                                   data-action="live#action:prevent"
+                                   data-live-action-param="changePage"
+                                   data-live-page-param="1"
+                                   aria-label="Première page">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {# Previous Page #}
+                        {% if this.page == 1 %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fas fa-angle-left"></i></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link"
+                                   data-action="live#action:prevent"
+                                   data-live-action-param="changePage"
+                                   data-live-page-param="{{ this.page - 1 }}"
+                                   aria-label="Précédent">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {# Numeric Pages #}
+                        {% for p in this.visiblePages %}
+                            {% if p == '...' %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% else %}
+                                <li class="page-item {% if p == this.page %}active{% endif %}">
+                                    {% if p == this.page %}
+                                        <span class="page-link">{{ p }}</span>
+                                    {% else %}
+                                        <a href="#" class="page-link"
+                                           data-action="live#action:prevent"
+                                           data-live-action-param="changePage"
+                                           data-live-page-param="{{ p }}">
+                                            {{ p }}
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {# Next Page #}
+                        {% if this.page == this.pageCount %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fas fa-angle-right"></i></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link"
+                                   data-action="live#action:prevent"
+                                   data-live-action-param="changePage"
+                                   data-live-page-param="{{ this.page + 1 }}"
+                                   aria-label="Suivant">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {# Last Page #}
+                        {% if this.page == this.pageCount %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link"
+                                   data-action="live#action:prevent"
+                                   data-live-action-param="changePage"
+                                   data-live-page-param="{{ this.pageCount }}"
+                                   aria-label="Dernière page">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+
+        <table id="datatable" class="table table-bordered table-fixed table-hover">
+            <thead>
+            <tr>
+                {% for header in this.headers %}
+                    <th>{{ header | trans }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+                {% block itemLines '' %}
+            </tbody>
+        </table>
+
+        <div class="row align-items-center mt-3">
+            <div class="col-sm-12">
+                <div class="dataTables_info text-muted small" role="status" aria-live="polite">
+                    Affichage de l'élément <strong>{{ this.startItem }}</strong> à <strong>{{ this.endItem }}</strong> sur <strong>{{ this.totalItems }}</strong> éléments
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

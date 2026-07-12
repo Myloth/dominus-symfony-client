@@ -11,26 +11,9 @@
 {% endblock %}
 
 {% block pageContent %}
-    {%  include 'admin/user/user/_search-form.html.twig' %}
-
-    <section class="list-section">
-        <table id="datatable" class="table table-bordered dataTable table-fixed table-hover">
-            <thead>
-            <tr>
-                <th>{{ 'users.listing.header.id' | trans }}</th>
-                <th>{{ 'users.listing.header.name' | trans }}</th>
-                <th>{{ "users.listing.header.group" | trans }}</th>
-                <th>{{ "users.listing.header.actions" | trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Les données seront insérées dynamiquement par DataTables -->
-            </tbody>
-        </table>
-    </section>
-
+    {{ component('UserList') }}
 {% endblock %}
 
 {% block javascripts %}
-    {{ importmap(['app', 'user-list']) }}
+    {{ importmap(['app']) }}
 {% endblock %}

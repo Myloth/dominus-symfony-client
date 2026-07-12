@@ -15,9 +15,8 @@ class GroupSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
         $builder
-            ->add('name', TextType::class, ['label' => 'groups.listing.form.name'])
+            ->add('name', TextType::class, ['label' => 'groups.listing.form.name', 'required' => false])
             ->add(
                 'roles',
                 ChoiceType::class,
@@ -27,7 +26,8 @@ class GroupSearchType extends AbstractType
                     'attr' => [
                         'class' => 'select2'
                     ],
-                    'label' => 'groups.listing.form.roleCode'
+                    'label' => 'groups.listing.form.roleCode',
+                    'required' => false
                 ]
             )
         ;

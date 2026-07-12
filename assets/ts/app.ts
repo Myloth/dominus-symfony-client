@@ -2,8 +2,8 @@ import Routing from "fos-router";
 import TomSelect from "tom-select";
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'tom-select/dist/css/tom-select.default.min.css';
-import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../styles/app.scss';
+import '../stimulus_bootstrap.js';
 
 import Translator from "bazinga-translator";
 
@@ -34,8 +34,12 @@ fetch('/translations/fr.json')
 // Initialize Tom Select
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.select2').forEach((el) => {
-        new TomSelect(el, {
+        const selectEl = el as HTMLSelectElement;
+        const ts = new TomSelect(selectEl, {
             plugins: ['remove_button']
+        });
+        ts.on('change', () => {
+            selectEl.dispatchEvent(new Event('input', { bubbles: true }));
         });
     });
 });

@@ -13,9 +13,14 @@ class UserClient extends AbstractClient
         return $this->request('GET', 'users', User::class.'[]');
     }
 
-    public function find(UserSearch $userSearch): array
+    public function find(UserSearch $userSearch, int $page = 1, int $itemsPerPage = 10): array
     {
-        return $this->request('GET', 'users', User::class.'[]', ['query' => $userSearch->getFilters()] );
+        $query = array_merge($userSearch->getFilters(), [
+            'page' => $page,
+            'itemsPerPage' => $itemsPerPage,
+        ]);
+
+        return  $this->requestWithMeta('GET', 'users', User::class.'[]', ['query' => $query] );
     }
 
     public function create(User $user): User

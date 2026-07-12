@@ -32,6 +32,12 @@ return [
         'path' => './assets/ts/user-edit.ts',
         'entrypoint' => true,
     ],
+    '@symfony/stimulus-bundle' => [
+        'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
+    ],
+    '@symfony/ux-live-component' => [
+        'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
+    ],
     'fos-router' => [
         'version' => '2.4.6',
     ],
@@ -42,22 +48,22 @@ return [
         'version' => '8.0.0',
     ],
     'intl-messageformat' => [
-        'version' => '10.7.18',
+        'version' => '11.2.11',
     ],
     'tslib' => [
         'version' => '2.8.1',
     ],
     '@formatjs/fast-memoize' => [
-        'version' => '2.2.7',
+        'version' => '3.1.7',
     ],
     '@formatjs/icu-messageformat-parser' => [
-        'version' => '2.11.4',
+        'version' => '3.5.14',
     ],
     '@formatjs/icu-skeleton-parser' => [
-        'version' => '1.8.16',
+        'version' => '2.1.11',
     ],
     'typescript' => [
-        'version' => '6.0.2',
+        'version' => '7.0.2',
     ],
     'fontawesome' => [
         'version' => '5.6.3',
@@ -66,18 +72,8 @@ return [
         'version' => '7.3.0',
         'type' => 'css',
     ],
-    'datatables.net-dt/css/dataTables.dataTables.min.css' => [
-        'version' => '2.3.8',
-        'type' => 'css',
-    ],
-    'datatables.net-dt' => [
-        'version' => '2.3.8',
-    ],
-    'datatables.net' => [
-        'version' => '2.3.8',
-    ],
     'tom-select' => [
-        'version' => '2.6.1',
+        'version' => '2.6.2',
     ],
     '@orchidjs/sifter' => [
         'version' => '1.1.0',
@@ -86,7 +82,19 @@ return [
         'version' => '1.1.2',
     ],
     'tom-select/dist/css/tom-select.default.min.css' => [
-        'version' => '2.6.1',
+        'version' => '2.6.2',
         'type' => 'css',
+    ],
+    '@hotwired/stimulus' => [
+        'version' => '3.2.2',
+    ],
+    'jszip' => [
+        'version' => '3.10.1',
+    ],
+    'pdfmake' => [
+        'version' => '0.3.11',
+    ],
+    'pdfmake/build/vfs_fonts' => [
+        'version' => '0.3.11',
     ],
 ];

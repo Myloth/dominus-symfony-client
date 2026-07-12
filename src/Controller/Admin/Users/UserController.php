@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Datatables\UserDatatable;
 
 #[Route('admin/user', name: 'admin_users_')]
 class UserController extends CrudController
@@ -26,26 +27,21 @@ class UserController extends CrudController
     }
 
     #[Route('/list', name: 'list')]
-    public function list(Request $request, UserClient $client)
+    public function list()
     {
-        $searchForm = $this->buildForm(UserSearchType::class, $this->generateFormOptions());
-
-        return $this->render('admin/user/user/list.html.twig', ['searchForm' => $searchForm]);
+        return $this->render('admin/user/user/list.html.twig');
     }
 
     #[Route('/load', name: 'load', options:['expose' => true])]
-    public function load(UserClient $userClient, Request $request): JsonResponse
+    public function load(UserDatatable $table, Request $request): JsonResponse
     {
-        $searchParams = $this->initSearch($request, UserSearch::class);
-        $users = $userClient->find($searchParams);
+        if ($request->isMethod('POST')) {
+            $request->query->add($request->request->all());
+        }
 
-        return new JsonResponse([
-            'data' => $this->renderData($users),
-            'recordsTotal' => count($users),
-            'recordsFiltered' => count($users)
-            ]
-        );
+        $table->handleRequest($request);
 
+        return $table->getResponse();
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'], options: ["expose" => true])]

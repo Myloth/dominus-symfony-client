@@ -13,4 +13,7 @@ return [
     Symfonycasts\SassBundle\SymfonycastsSassBundle::class => ['all' => true],
     Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class => ['all' => true],
     Sensiolabs\TypeScriptBundle\SensiolabsTypeScriptBundle::class => ['all' => true],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+    Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
 ];

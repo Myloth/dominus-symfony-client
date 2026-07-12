@@ -7,6 +7,7 @@ use App\Client\Users\RoleClient;
 use App\Dto\Users\Group;
 use App\Form\Edit\User\GroupType;
 use App\Controller\Admin\CrudController;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Form\Search\User\GroupSearchType;
 use App\Dto\Users\GroupSearch;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Datatables\GroupDatatable;
 
 /**
  * Class GroupController
@@ -33,27 +35,9 @@ class GroupController extends CrudController
     }
 
     #[Route('/list', name: 'list')]
-    public function list(GroupClient $groupClient)
+    public function list()
     {
-        $searchForm = $this->buildForm(GroupSearchType::class, $this->generateFormOptions());
-
-        return $this->render('admin/user/group/list.html.twig', ['searchForm' => $searchForm]);
-    }
-
-    #[Route('/load', name: 'load', options:['expose' => true])]
-    public function load(GroupClient $groupClient, Request $request): JsonResponse
-    {
-        $searchParams = $this->initSearch($request, GroupSearch::class);
-
-        $groups = $this->groupClient->find($searchParams);
-
-        return new JsonResponse([
-            'data' => $this->renderData($groups),
-            'recordsTotal' => count($groups),
-            'recordsFiltered' => count($groups)
-            ]
-        );
-
+        return $this->render('admin/user/group/list.html.twig');
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'], options: ["expose" => true])]

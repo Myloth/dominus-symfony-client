@@ -1,0 +1,6 @@
+{% trans_default_domain 'users' %}
+{% for role in entity.roles %}
+    <span class="role-badge {% if 'ADMIN' in role.code %}role-admin{% endif %}">{{ role.code }}</span>
+{% else %}
+    <span class="text-muted">-</span>
+{% endfor %}

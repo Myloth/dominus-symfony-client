@@ -3,6 +3,8 @@ services:
     build:
       context: docker/frankenphp
     restart: unless-stopped
+#    external_links:
+#      - dominus-api-dominus-api-1:api.dominus.localhost
     environment:
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
@@ -10,7 +12,7 @@ services:
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://php/.well-known/mercure}
       MERCURE_PUBLIC_URL: ${CADDY_MERCURE_PUBLIC_URL:-https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}/.well-known/mercure}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      DOMINUS_API_ENDPOINT: http://dominus-api-dominus-api-1
+      DOMINUS_API_ENDPOINT: http://dominus-api
       TRUSTED_PROXIES: ${TRUSTED_PROXIES:-127.0.0.1,REMOTE_ADDR}
       SERVER_NAME: https://dominus-admin.localhost
     volumes:
@@ -21,11 +23,6 @@ services:
       - ./docker/frankenphp/conf.d/10-app.ini:/usr/local/etc/php/app.conf.d/10-app.ini:ro
     labels:
       - "traefik.enable=true"
-#      - "traefik.http.routers.dominus-admin.rule=Host(`dominus-admin.localhost`)"
-#      - "traefik.http.routers.dominus-admin.entrypoints=websecure"
-#      - "traefik.http.routers.dominus-admin.tls=true"
-#      - "traefik.http.routers.dominus-admin.tls.certresolver=le"
-#      - "traefik.http.services.dominus-admin.loadbalancer.server.port=80"
       # 1. Configuration du routeur TCP pour le HTTPS (Port 443)
       - "traefik.tcp.routers.dominus-admin-https.rule=HostSNI(`dominus-admin.localhost`)"
       - "traefik.tcp.routers.dominus-admin-https.entrypoints=websecure"
@@ -40,18 +37,6 @@ services:
       - "traefik.http.routers.dominus-admin-http.entrypoints=web"
       # Redirige vers le port HTTP de FrankenPHP (qui gérera la redirection HTTP -> HTTPS)
       - "traefik.http.services.dominus-admin-http.loadbalancer.server.port=80"
-    networks:
-      - dominus-network
-
-  da-node:
-    image: "node:20"
-    working_dir: "/home/node/app"
-    environment:
-      - NODE_ENV=dev
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./:/home/node/app
     networks:
       - dominus-network
 

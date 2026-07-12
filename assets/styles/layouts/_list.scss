@@ -1,7 +1,289 @@
 @use "../imports/variables";
 @use "../imports/mixins";
 
+// Specific style for reset button in the search form
 .btn-danger {
     @include mixins.nav-button;
-    background-color: red;
+    background-color: variables.$danger-color;
+    color: variables.$background-white;
+    transition: background-color variables.$transition-fast ease, transform variables.$transition-fast ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:hover {
+        background-color: darken(variables.$danger-color, 8%);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.list-section {
+    background: variables.$background-white;
+    padding: variables.$spacing-lg;
+    border-radius: variables.$border-radius-lg;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: variables.$spacing-lg;
+    margin-bottom: variables.$spacing-xl;
+    overflow-x: auto;
+
+    .table-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: variables.$spacing-sm;
+        margin-bottom: variables.$spacing-md;
+
+        .dataTables_paginate {
+            margin-left: auto;
+        }
+
+        @media (max-width: variables.$breakpoint-sm) {
+            flex-direction: column;
+            align-items: stretch;
+
+            .dataTables_paginate {
+                margin-left: 0;
+                margin-top: variables.$spacing-sm;
+                display: flex;
+                justify-content: center;
+            }
+
+            .dataTables_length {
+                text-align: center;
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: variables.$font-size-sm;
+        color: variables.$text-dark;
+
+        &.table-fixed {
+            table-layout: fixed;
+        }
+
+        thead {
+            tr {
+                background-color: variables.$background-light;
+            }
+            
+            th {
+                padding: 14px 16px;
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: variables.$font-size-xs;
+                color: variables.$text-muted;
+                letter-spacing: 0.8px;
+                border-bottom: 2px solid variables.$border-color;
+                text-align: left;
+                vertical-align: middle;
+
+                &:first-child {
+                    border-top-left-radius: variables.$border-radius-md;
+                    border-bottom-left-radius: variables.$border-radius-md;
+                    width: 80px; // Column ID
+                }
+
+                &:last-child {
+                    border-top-right-radius: variables.$border-radius-md;
+                    border-bottom-right-radius: variables.$border-radius-md;
+                    width: 120px; // Actions
+                    text-align: right;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid variables.$border-color;
+                transition: background-color variables.$transition-fast ease;
+
+                &:last-child {
+                    td {
+                        border-bottom: none;
+                    }
+                }
+
+                &.table-hover:hover,
+                &:hover {
+                    background-color: rgba(variables.$primary-color, 0.04);
+                }
+            }
+
+            td {
+                padding: 16px;
+                vertical-align: middle;
+                border-bottom: 1px solid variables.$border-color;
+                word-wrap: break-word;
+
+                &:first-child {
+                    font-weight: 600;
+                    color: variables.$text-muted;
+                }
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+        }
+
+        // Table Bordered styling
+        &.table-bordered {
+            border: 1px solid variables.$border-color;
+            border-radius: variables.$border-radius-md;
+            overflow: hidden;
+
+            th, td {
+                border: 1px solid variables.$border-color;
+            }
+
+            thead th {
+                border-bottom-width: 2px;
+            }
+        }
+    }
+
+    // Pagination styling
+    .pagination {
+        display: inline-flex;
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        border-radius: variables.$border-radius-md;
+        
+        .page-item {
+            margin: 0;
+            
+            .page-link {
+                position: relative;
+                display: block;
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+                color: variables.$primary-color;
+                text-decoration: none;
+                background-color: variables.$background-white;
+                border: 1px solid variables.$border-color;
+                transition: color variables.$transition-fast ease, background-color variables.$transition-fast ease, border-color variables.$transition-fast ease;
+                cursor: pointer;
+                user-select: none;
+                line-height: 1.25;
+                
+                i {
+                    font-size: 0.75rem;
+                }
+            }
+            
+            &:first-child {
+                .page-link {
+                    border-top-left-radius: variables.$border-radius-md;
+                    border-bottom-left-radius: variables.$border-radius-md;
+                }
+            }
+            
+            &:last-child {
+                .page-link {
+                    border-top-right-radius: variables.$border-radius-md;
+                    border-bottom-right-radius: variables.$border-radius-md;
+                }
+            }
+            
+            &:not(:first-child) {
+                margin-left: -1px;
+            }
+            
+            &:hover:not(.active):not(.disabled) {
+                .page-link {
+                    color: darken(variables.$primary-color, 15%);
+                    background-color: variables.$background-light;
+                    border-color: variables.$border-color;
+                }
+            }
+            
+            &.active {
+                .page-link {
+                    z-index: 3;
+                    color: variables.$background-white;
+                    background-color: variables.$primary-color;
+                    border-color: variables.$primary-color;
+                    cursor: default;
+                }
+            }
+            
+            &.disabled {
+                .page-link {
+                    color: variables.$text-muted;
+                    pointer-events: none;
+                    background-color: variables.$background-white;
+                    border-color: variables.$border-color;
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    // Select styling for items per page
+    .form-select-sm {
+        display: inline-block;
+        width: auto;
+        height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: variables.$text-dark;
+        vertical-align: middle;
+        background-color: variables.$background-white;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        border: 1px solid variables.$border-color;
+        border-radius: variables.$border-radius-md;
+        appearance: none;
+        transition: border-color variables.$transition-fast ease-in-out;
+        
+        &:focus {
+            border-color: variables.$primary-color;
+            outline: 0;
+        }
+    }
+}
+
+// Styling for role badges inside tables
+.role-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background-color: rgba(variables.$primary-color, 0.1);
+    color: variables.$primary-color;
+    margin-right: variables.$spacing-xs;
+    margin-bottom: variables.$spacing-xs;
+    text-transform: uppercase;
+    border: 1px solid rgba(variables.$primary-color, 0.15);
+    
+    &.role-admin,
+    &[data-role*="ADMIN"],
+    &[class*="-admin"] {
+        background-color: rgba(variables.$danger-color, 0.1);
+        color: variables.$danger-color;
+        border-color: rgba(variables.$danger-color, 0.15);
+    }
 }
