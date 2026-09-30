@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import 'tom-select/dist/css/tom-select.default.min.css';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../styles/app.scss';
+import '../stimulus_bootstrap.js';
 
 import Translator from "bazinga-translator";
 

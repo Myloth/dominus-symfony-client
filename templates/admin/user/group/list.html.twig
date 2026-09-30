@@ -2,31 +2,40 @@
 {% extends 'admin/base.html.twig' %}
 {% set page_title = 'groups.listing.title' | trans %}
 
-{% block pageActions %}
-    <div class="page-actions">
-        <a href="{{ path('admin_users_group_new') }}" class="btn-primary">
-            <i class="fas fa-plus"></i> Nouveau
-        </a>
-    </div>
-{% endblock %}
-
 {% block pageContent %}
-    {%  include 'admin/user/group/_search-form.html.twig' %}
+    {% include 'admin/user/group/_search-form.html.twig' %}
 
-    <section class="list-section">
-        <table id="datatable" class="table table-bordered dataTable table-fixed table-hover">
-            <thead>
-            <tr>
-                <th>{{ 'groups.listing.header.id' | trans }}</th>
-                <th>{{ 'groups.listing.header.name' | trans }}</th>
-                <th>{{ "groups.listing.header.roles" | trans }}</th>
-                <th>{{ "groups.listing.header.actions" | trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Les données seront insérées dynamiquement par DataTables -->
-            </tbody>
-        </table>
+    <section class="tag-table-card">
+        <div class="table-toolbar">
+            <div class="toolbar-left">
+                <span class="tags-count-badge">
+                    <i class="fas fa-user-shield"></i>
+                    {{ 'groups.listing.title' | trans }}
+                </span>
+            </div>
+
+            <div class="toolbar-right">
+                <a href="{{ path('admin_users_group_new') }}" class="btn-primary">
+                    <i class="fas fa-plus"></i> {{ 'groups.listing.button.add' | trans }}
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="datatable" class="tag-table table table-hover dataTable">
+                <thead>
+                <tr>
+                    <th style="width: 80px;">{{ 'groups.listing.header.id' | trans }}</th>
+                    <th>{{ 'groups.listing.header.name' | trans }}</th>
+                    <th>{{ 'groups.listing.header.roles' | trans }}</th>
+                    <th class="text-right" style="width: 140px;">{{ 'groups.listing.header.actions' | trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Les données seront insérées dynamiquement par DataTables -->
+                </tbody>
+            </table>
+        </div>
     </section>
 
 {% endblock %}
