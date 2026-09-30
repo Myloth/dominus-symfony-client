@@ -1,21 +1,31 @@
-<section class="search-section">
-    {{ form_start(searchForm, {"attr": {"class": "search-form"}}) }}
-    <div class="form-row">
-        <div class="form-group col-md-4">
+{% trans_default_domain 'users' %}
+<section class="tag-search-card">
+    {{ form_start(searchForm, {"attr": {"class": "search-form", "id": "group_search_form", "onsubmit": "event.preventDefault(); document.getElementById('data_search').click();"}}) }}
+    <div class="search-fields-grid">
+        <div class="filter-field">
             {{ form_label(searchForm.name) }}
-            {{ form_widget(searchForm.name) }}
+            <div class="input-with-icon">
+                <i class="fas fa-search"></i>
+                {{ form_widget(searchForm.name, {"attr": {"placeholder": "Rechercher par nom de groupe..."}}) }}
+            </div>
         </div>
-        <div class="form-group">
+
+        <div class="filter-field">
             {{ form_label(searchForm.roles) }}
             {{ form_widget(searchForm.roles) }}
         </div>
+
+        <div class="filter-actions-col">
+            <label>&nbsp;</label>
+            <div class="filter-buttons-group">
+                <button type="button" class="btn-reset-filters" id="data_reset" title="{{ 'common.actions.reset' | trans }}">
+                    <i class="fas fa-undo"></i> {{ 'common.actions.reset' | trans }}
+                </button>
+                <button type="button" class="btn-primary" id="data_search" title="{{ 'common.actions.search' | trans }}">
+                    <i class="fas fa-search"></i> {{ 'common.actions.search' | trans }}
+                </button>
+            </div>
+        </div>
     </div>
     {{ form_end(searchForm) }}
-    <div class="search-actions">
-        <a class="btn-danger" id="data_reset">Vider le formulaire</a>
-
-        <button type="submit" class="btn-primary" id="data_search">
-            <i class="fas fa-search"></i> Rechercher
-        </button>
-    </div>
 </section>
