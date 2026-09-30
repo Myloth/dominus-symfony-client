@@ -25,6 +25,7 @@ security:
   access_control:
     - { path: ^/login$, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/_components, roles: ROLE_ADMIN }
     - { path: ^/, roles: PUBLIC_ACCESS }
 
   role_hierarchy:

@@ -1,0 +1,422 @@
+<div {{ attributes }} class="tag-admin-container">
+
+    {# Notifications #}
+    {% if this.flashSuccess %}
+        <div class="alert alert-success">
+            <div class="alert-content">
+                <i class="fas fa-check-circle"></i>
+                <span>{{ this.flashSuccess }}</span>
+            </div>
+            <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    {% endif %}
+
+    {% if this.flashError %}
+        <div class="alert alert-danger">
+            <div class="alert-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>{{ this.flashError }}</span>
+            </div>
+            <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    {% endif %}
+
+    {# Filter & Search Bar #}
+    <section class="tag-search-card">
+        <div class="search-fields-grid">
+            <div class="filter-field">
+                <label for="filter-name">Nom du tag</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-search"></i>
+                    <input
+                        id="filter-name"
+                        type="text"
+                        placeholder="Rechercher par nom..."
+                        data-model="debounce(250)|searchName"
+                        value="{{ this.searchName }}"
+                    >
+                </div>
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-slug">Slug</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-tag"></i>
+                    <input
+                        id="filter-slug"
+                        type="text"
+                        placeholder="Rechercher par slug..."
+                        data-model="debounce(250)|searchSlug"
+                        value="{{ this.searchSlug }}"
+                    >
+                </div>
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-entity-type">Type d'entité</label>
+                <select id="filter-entity-type" data-model="searchEntityType">
+                    <option value="">Tous les types</option>
+                    {% for key, label in this.availableEntityTypes %}
+                        <option value="{{ key }}" {{ this.searchEntityType == key ? 'selected' : '' }}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-actions-col">
+                <label>&nbsp;</label>
+                <button
+                    type="button"
+                    class="btn-reset-filters"
+                    data-action="live#action"
+                    data-live-action-param="resetFilters"
+                    title="Réinitialiser les filtres"
+                >
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </button>
+            </div>
+        </div>
+    </section>
+
+    {# Table Card #}
+    {% set paginatedData = this.tags %}
+    <section class="tag-table-card">
+        <div class="table-toolbar">
+            <div class="toolbar-left">
+                <span class="tags-count-badge">
+                    <i class="fas fa-tags"></i>
+                    <strong>{{ paginatedData.totalItems }}</strong> tag{{ paginatedData.totalItems > 1 ? 's' : '' }} au total
+                </span>
+                <span class="loading-indicator" data-loading>
+                    <i class="fas fa-spinner fa-spin"></i> Chargement...
+                </span>
+            </div>
+
+            <div class="toolbar-right">
+                <button
+                    type="button"
+                    class="btn-primary"
+                    data-action="live#action"
+                    data-live-action-param="openCreateModal"
+                >
+                    <i class="fas fa-plus"></i> Créer un tag
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="tag-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Slug</th>
+                        <th>Type d'entité</th>
+                        <th>Catégorie</th>
+                        <th>Date de création</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tag in paginatedData.items %}
+                        <tr>
+                            <td class="col-name">
+                                <strong>{{ tag.name }}</strong>
+                            </td>
+                            <td class="col-slug">
+                                <code class="tag-slug-pill">{{ tag.slug }}</code>
+                            </td>
+                            <td class="col-entity">
+                                <span class="entity-badge entity-badge-{{ tag.entityType }}">
+                                    {{ tag.entityType }}
+                                </span>
+                            </td>
+                            <td class="col-category">
+                                {% if tag.category %}
+                                    <span class="category-pill">{{ tag.category }}</span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-date">
+                                {{ tag.formattedCreatedAt }}
+                            </td>
+                            <td class="col-actions text-right">
+                                <button
+                                    type="button"
+                                    class="action-btn action-edit"
+                                    title="Modifier le tag"
+                                    data-action="live#action"
+                                    data-live-action-param="openEditModal"
+                                    data-live-id-param="{{ tag.id }}"
+                                >
+                                    <i class="fas fa-pen"></i> Modifier
+                                </button>
+                                <button
+                                    type="button"
+                                    class="action-btn action-delete"
+                                    title="Supprimer le tag"
+                                    data-action="live#action"
+                                    data-live-action-param="confirmDelete"
+                                    data-live-id-param="{{ tag.id }}"
+                                    data-live-name-param="{{ tag.name }}"
+                                >
+                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="empty-state-inner">
+                                    <i class="fas fa-folder-open empty-icon"></i>
+                                    <h3>Aucun tag trouvé</h3>
+                                    <p>Aucun tag ne correspond à vos critères de recherche.</p>
+                                    {% if this.searchName or this.searchSlug or this.searchEntityType %}
+                                        <button
+                                            type="button"
+                                            class="btn-reset-filters"
+                                            data-action="live#action"
+                                            data-live-action-param="resetFilters"
+                                        >
+                                            <i class="fas fa-undo"></i> Réinitialiser les filtres
+                                        </button>
+                                    {% else %}
+                                        <button
+                                            type="button"
+                                            class="btn-primary"
+                                            data-action="live#action"
+                                            data-live-action-param="openCreateModal"
+                                        >
+                                            <i class="fas fa-plus"></i> Créer le premier tag
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {# Pagination Section #}
+        {% if paginatedData.totalItems > 0 %}
+            <div class="table-pagination-bar">
+                <div class="pagination-info">
+                    Affichage de <strong>{{ paginatedData.startIndex }}</strong> à <strong>{{ paginatedData.endIndex }}</strong> sur <strong>{{ paginatedData.totalItems }}</strong> tags
+                </div>
+
+                <div class="pagination-controls">
+                    <div class="per-page-selector">
+                        <label for="items-per-page">Par page :</label>
+                        <select id="items-per-page" data-model="itemsPerPage">
+                            <option value="5" {{ this.itemsPerPage == 5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ this.itemsPerPage == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ this.itemsPerPage == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ this.itemsPerPage == 50 ? 'selected' : '' }}>50</option>
+                        </select>
+                    </div>
+
+                    {% if paginatedData.totalPages > 1 %}
+                        <ul class="pagination-list">
+                            <li>
+                                <button
+                                    type="button"
+                                    class="page-link {{ not paginatedData.hasPreviousPage ? 'disabled' : '' }}"
+                                    {{ not paginatedData.hasPreviousPage ? 'disabled' : '' }}
+                                    data-action="live#action"
+                                    data-live-action-param="setPage"
+                                    data-live-page-param="{{ this.page - 1 }}"
+                                >
+                                    <i class="fas fa-chevron-left"></i> Précédent
+                                </button>
+                            </li>
+
+                            {% for p in 1..paginatedData.totalPages %}
+                                {% if p == 1 or p == paginatedData.totalPages or (p >= this.page - 2 and p <= this.page + 2) %}
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="page-link {{ p == this.page ? 'active' : '' }}"
+                                            data-action="live#action"
+                                            data-live-action-param="setPage"
+                                            data-live-page-param="{{ p }}"
+                                        >
+                                            {{ p }}
+                                        </button>
+                                    </li>
+                                {% elseif p == this.page - 3 or p == this.page + 3 %}
+                                    <li class="page-ellipsis">...</li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <li>
+                                <button
+                                    type="button"
+                                    class="page-link {{ not paginatedData.hasNextPage ? 'disabled' : '' }}"
+                                    {{ not paginatedData.hasNextPage ? 'disabled' : '' }}
+                                    data-action="live#action"
+                                    data-live-action-param="setPage"
+                                    data-live-page-param="{{ this.page + 1 }}"
+                                >
+                                    Suivant <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    {# Modal Create / Edit Tag #}
+    {% if this.isModalOpen %}
+        <div class="modal-backdrop-custom" data-action="click->live#action" data-live-action-param="closeModal"></div>
+        <div class="modal-dialog-custom" role="dialog" aria-modal="true" aria-labelledby="modal-tag-title">
+            <div class="modal-header-custom">
+                <h3 id="modal-tag-title">
+                    <i class="fas {{ this.editingId ? 'fa-edit' : 'fa-plus-circle' }}"></i>
+                    {{ this.editingId ? 'Modifier le tag' : 'Créer un nouveau tag' }}
+                </h3>
+                <button
+                    type="button"
+                    class="modal-close-btn"
+                    data-action="live#action"
+                    data-live-action-param="closeModal"
+                    aria-label="Fermer"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form data-action="submit->live#action:prevent" data-live-action-param="save">
+                <div class="modal-body-custom">
+
+                    {# Nom field #}
+                    <div class="modal-form-group {{ this.validationErrors.name is defined ? 'has-error' : '' }}">
+                        <label for="form-tag-name">
+                            Nom <span class="required-star">*</span>
+                        </label>
+                        <input
+                            id="form-tag-name"
+                            type="text"
+                            placeholder="ex: Quête Principale"
+                            data-model="formName"
+                            value="{{ this.formName }}"
+                            autofocus
+                        >
+                        {% if this.validationErrors.name is defined %}
+                            <span class="field-error-msg">{{ this.validationErrors.name }}</span>
+                        {% else %}
+                            <small class="field-hint">
+                                {% if this.editingId and this.editingSlug %}
+                                    Le slug est généré par l'API (slug actuel : <code>{{ this.editingSlug }}</code>).
+                                {% else %}
+                                    Le slug sera généré automatiquement par l'API à partir du nom.
+                                {% endif %}
+                            </small>
+                        {% endif %}
+                    </div>
+
+                    {# Type d'entité field #}
+                    <div class="modal-form-group {{ this.validationErrors.entityType is defined ? 'has-error' : '' }}">
+                        <label for="form-tag-entity-type">
+                            Type d'entité <span class="required-star">*</span>
+                        </label>
+                        <select id="form-tag-entity-type" data-model="formEntityType">
+                            {% for key, label in this.availableEntityTypes %}
+                                <option value="{{ key }}" {{ this.formEntityType == key ? 'selected' : '' }}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if this.validationErrors.entityType is defined %}
+                            <span class="field-error-msg">{{ this.validationErrors.entityType }}</span>
+                        {% endif %}
+                    </div>
+
+                    {# Catégorie field #}
+                    <div class="modal-form-group">
+                        <label for="form-tag-category">
+                            Catégorie <span class="optional-tag">(optionnel)</span>
+                        </label>
+                        <input
+                            id="form-tag-category"
+                            type="text"
+                            placeholder="ex: histoire, boss, journaliere..."
+                            data-model="formCategory"
+                            value="{{ this.formCategory }}"
+                        >
+                        <small class="field-hint">Permet de sous-classer les tags pour une même entité.</small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer-custom">
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        data-action="live#action"
+                        data-live-action-param="closeModal"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        <i class="fas fa-check"></i>
+                        {{ this.editingId ? 'Enregistrer les modifications' : 'Créer le tag' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    {# Modal Confirmation Delete #}
+    {% if this.isDeleteConfirmOpen %}
+        <div class="modal-backdrop-custom" data-action="click->live#action" data-live-action-param="cancelDelete"></div>
+        <div class="modal-dialog-custom modal-confirm-danger" role="dialog" aria-modal="true">
+            <div class="modal-header-custom danger-header">
+                <h3>
+                    <i class="fas fa-exclamation-triangle"></i> Confirmer la suppression
+                </h3>
+                <button
+                    type="button"
+                    class="modal-close-btn"
+                    data-action="live#action"
+                    data-live-action-param="cancelDelete"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-custom">
+                <p>
+                    Êtes-vous certain de vouloir supprimer le tag <strong>« {{ this.deletingName }} »</strong> ?
+                </p>
+                <p class="text-danger-warning">
+                    <i class="fas fa-info-circle"></i> Cette action est irréversible. Les entités associées ne contiendront plus ce tag.
+                </p>
+            </div>
+            <div class="modal-footer-custom">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    data-action="live#action"
+                    data-live-action-param="cancelDelete"
+                >
+                    Annuler
+                </button>
+                <button
+                    type="button"
+                    class="btn-danger-confirm"
+                    data-action="live#action"
+                    data-live-action-param="executeDelete"
+                >
+                    <i class="fas fa-trash-alt"></i> Confirmer la suppression
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+</div>

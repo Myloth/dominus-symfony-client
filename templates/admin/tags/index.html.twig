@@ -1,0 +1,11 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration - Tags{% endblock %}
+
+{% block pageContent %}
+    <twig:tag_admin />
+{% endblock %}
+
+{% block javascripts %}
+    {{ importmap('app') }}
+{% endblock %}
