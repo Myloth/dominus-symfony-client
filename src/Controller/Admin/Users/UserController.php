@@ -66,17 +66,30 @@ class UserController extends CrudController
             ]);
     }
 
-    private function renderData(array $users)
+    private function renderData(array $users): array
     {
-        dump($users);
         $results = [];
         /** @var User $user */
         foreach ($users as $user) {
+            $groupsHtml = '';
+            foreach ($user->groups ?? [] as $group) {
+                if ($group?->name) {
+                    $groupsHtml .= '<span class="group-badge"><i class="fas fa-users"></i> ' . htmlspecialchars($group->name) . '</span> ';
+                }
+            }
+            if ($groupsHtml === '') {
+                $groupsHtml = '<span class="text-muted">-</span>';
+            }
+
+            $actionsHtml = '<div class="col-actions text-right">'
+                . '<a href="' . $this->generateUrl('admin_users_new') . '" class="action-btn action-edit" title="Modifier"><i class="fas fa-pen"></i> Modifier</a>'
+                . '</div>';
+
             $line = [
-                'id' => $user->id,
-                'username' => $user->username,
-                'groups' => implode(',', array_map(function ($value) {return $value?->name; }, $user?->groups)),
-                'actions' => '',
+                'id' => '<code class="tag-slug-pill">#' . $user->id . '</code>',
+                'username' => '<span class="col-name"><strong>' . htmlspecialchars($user->username ?? '') . '</strong></span>',
+                'groups' => $groupsHtml,
+                'actions' => $actionsHtml,
             ];
 
             $results[] = $line;
