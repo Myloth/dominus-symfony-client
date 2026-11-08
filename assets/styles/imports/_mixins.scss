@@ -1,12 +1,30 @@
 @use "../imports/variables";
 
 @mixin nav-button {
-    padding: 8px 16px;
+    padding: 9px 18px;
     border: none;
-    border-radius: 4px;
+    border-radius: variables.$border-radius-sm;
     cursor: pointer;
-    font-weight: bold;
-    background-color: variables.$primary-color;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2689aa 0%, #1d6f8a 100%);
     color: white;
-    font-size: 14px;
+    font-size: 13.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(38, 137, 170, 0.25);
+    transition: all variables.$transition-fast;
+
+    &:hover {
+        background: linear-gradient(135deg, #2c9bc0 0%, #227f9e 100%);
+        box-shadow: 0 4px 12px rgba(38, 137, 170, 0.35);
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
 }

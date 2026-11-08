@@ -47,8 +47,10 @@
         align-items: center;
         justify-content: center;
 
-        i {
+        i, svg {
             font-size: 28px;
+            width: 28px;
+            height: 28px;
             color: #007bff;
         }
     }
@@ -81,7 +83,7 @@
         border: 1px solid #f8b4b4;
         color: #9b1c1c;
 
-        i {
+        i, svg {
             color: #e02424;
             flex-shrink: 0;
         }

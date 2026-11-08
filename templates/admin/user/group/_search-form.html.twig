@@ -5,7 +5,7 @@
         <div class="filter-field">
             {{ form_label(searchForm.name) }}
             <div class="input-with-icon">
-                <i class="fas fa-search"></i>
+                {{ ux_icon('fa-solid:search') }}
                 {{ form_widget(searchForm.name, {"attr": {"placeholder": "Rechercher par nom de groupe..."}}) }}
             </div>
         </div>
@@ -19,10 +19,10 @@
             <label>&nbsp;</label>
             <div class="filter-buttons-group">
                 <button type="button" class="btn-reset-filters" id="data_reset" title="{{ 'common.actions.reset' | trans }}">
-                    <i class="fas fa-undo"></i> {{ 'common.actions.reset' | trans }}
+                    {{ ux_icon('fa-solid:undo') }} {{ 'common.actions.reset' | trans }}
                 </button>
                 <button type="button" class="btn-primary" id="data_search" title="{{ 'common.actions.search' | trans }}">
-                    <i class="fas fa-search"></i> {{ 'common.actions.search' | trans }}
+                    {{ ux_icon('fa-solid:search') }} {{ 'common.actions.search' | trans }}
                 </button>
             </div>
         </div>

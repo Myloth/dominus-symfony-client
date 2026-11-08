@@ -9,14 +9,14 @@
         <div class="table-toolbar">
             <div class="toolbar-left">
                 <span class="tags-count-badge">
-                    <i class="fas fa-users"></i>
+                    {{ ux_icon('fa-solid:users') }}
                     {{ 'users.listing.title' | trans }}
                 </span>
             </div>
 
             <div class="toolbar-right">
                 <a href="{{ path('admin_users_new') }}" class="btn-primary">
-                    <i class="fas fa-plus"></i> {{ 'users.listing.button.add' | trans }}
+                    {{ ux_icon('fa-solid:plus') }} {{ 'users.listing.button.add' | trans }}
                 </a>
             </div>
         </div>

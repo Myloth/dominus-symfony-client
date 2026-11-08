@@ -3,9 +3,12 @@
 
 {% block pageActions %}
     <div class="page-actions">
-        <a href="{{ path('admin_users_list') }}" class="btn-secondary">{{ 'common.actions.back' | trans }}</a>
-        <button id="saveButton" class="btn-primary" type="submit">{{ 'common.actions.save' | trans }}</button>
-
+        <a href="{{ path('admin_users_list') }}" class="btn-secondary">
+            {{ ux_icon('fa-solid:arrow-left') }} {{ 'common.actions.back' | trans }}
+        </a>
+        <button id="saveButton" class="btn-primary" type="submit">
+            {{ ux_icon('fa-solid:save') }} {{ 'common.actions.save' | trans }}
+        </button>
     </div>
 {% endblock %}
 
@@ -55,7 +58,7 @@
                 <div class="help-header">
                     <h2>{{ 'common.help.title' | trans }}</h2>
                     <button class="btn-edit-help" id="editHelpBtn">
-                        <i class="fas fa-edit"></i>
+                        {{ ux_icon('fa-solid:edit') }}
                     </button>
                 </div>
                 <div class="help-text" id="helpText">

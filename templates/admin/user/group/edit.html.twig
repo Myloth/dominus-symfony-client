@@ -3,9 +3,12 @@
 
 {% block pageActions %}
     <div class="page-actions">
-        <a href="/back.html" class="btn-secondary">Retour</a>
-        <button id="saveButton" class="btn-primary" type="submit">Enregistrer</button>
-
+        <a href="{{ path('admin_users_group_list') }}" class="btn-secondary">
+            {{ ux_icon('fa-solid:arrow-left') }} Retour
+        </a>
+        <button id="saveButton" class="btn-primary" type="submit">
+            {{ ux_icon('fa-solid:save') }} Enregistrer
+        </button>
     </div>
 {% endblock %}
 
@@ -47,7 +50,7 @@
                 <div class="help-header">
                     <h2>Aide</h2>
                     <button class="btn-edit-help" id="editHelpBtn">
-                        <i class="fas fa-edit"></i>
+                        {{ ux_icon('fa-solid:edit') }}
                     </button>
                 </div>
                 <div class="help-text" id="helpText">

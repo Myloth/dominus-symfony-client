@@ -20,8 +20,10 @@
             align-items: center;
             gap: 10px;
 
-            i {
+            i, svg {
                 font-size: 16px;
+                width: 16px;
+                height: 16px;
             }
         }
 
@@ -115,11 +117,13 @@
                 display: flex;
                 align-items: center;
 
-                i {
+                i, svg {
                     position: absolute;
                     left: 12px;
                     color: variables.$text-muted;
                     font-size: 13px;
+                    width: 14px;
+                    height: 14px;
                     pointer-events: none;
                 }
 
@@ -578,7 +582,7 @@
                 align-items: center;
                 gap: 10px;
 
-                i {
+                i, svg {
                     color: #2689aa;
                 }
             }
@@ -590,7 +594,7 @@
                 h3 {
                     color: #c53030;
 
-                    i {
+                    i, svg {
                         color: #e53e3e;
                     }
                 }

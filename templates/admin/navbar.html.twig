@@ -1,47 +1,78 @@
 <aside class="sidebar">
     <nav>
-        <button class="sidebar-toggle">
-            <i class="fas fa-bars"></i>
+        <button class="sidebar-toggle" type="button" title="Réduire / Agrandir le menu" aria-label="Basculer le menu">
+            {{ ux_icon('fa-solid:chevron-left') }}
         </button>
+
         <div class="logo">
-            <img src="/img/logo-placeholder.png" alt="Logo">
+            <a href="{{ path('app_index') }}" class="brand-link">
+                <div class="brand-icon">
+                    {{ ux_icon('fa-solid:crown') }}
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">DOMINUS</span>
+                    <span class="brand-subtitle">Control Center</span>
+                </div>
+            </a>
         </div>
 
         <div class="user-info">
             <div class="user-avatar">
-                <i class="fas fa-user-circle"></i>
+                {{ ux_icon('fa-solid:user-astronaut') }}
+                <span class="status-dot" title="En ligne"></span>
             </div>
             <div class="user-details">
                 <p class="username">{{ app.user ? app.user.userIdentifier : 'Invité' }}</p>
-                <p class="user-group">Administrateur</p>
+                <p class="user-group">
+                    {{ ux_icon('fa-solid:shield-alt') }} Administrateur
+                </p>
             </div>
             <a href="{{ path('app_logout') }}" class="logout-btn" title="Déconnexion">
-                <i class="fas fa-sign-out-alt"></i>
+                {{ ux_icon('fa-solid:power-off') }}
             </a>
         </div>
 
         {% set current_route = app.request.attributes.get('_route')|default('') %}
+        {% set is_users_section = current_route starts with 'admin_users_' %}
+        {% set is_tags_section = current_route starts with 'admin_tags_' %}
 
         <div class="nav-menu">
             <div class="nav-section">
                 <h3>Administration</h3>
-                <div class="nav-item">
+
+                <div class="nav-item {{ is_users_section ? 'is-open' : 'is-open' }}">
                     <div class="nav-item-header">
-                        <span>Utilisateurs</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="nav-item-label">
+                            <span class="nav-icon">{{ ux_icon('fa-solid:users-cog') }}</span>
+                            <span class="nav-text">Utilisateurs</span>
+                        </span>
+                        {{ ux_icon('fa-solid:chevron-down', {class: 'nav-chevron'}) }}
                     </div>
                     <div class="nav-item-content">
-                        <a href="{{ path('admin_users_list') }}" class="{{ current_route starts with 'admin_users_' and not (current_route starts with 'admin_users_group_') and not (current_route starts with 'admin_users_role_') ? 'active' : '' }}">Utilisateurs</a>
-                        <a href="{{ path('admin_users_group_list') }}" class="{{ current_route starts with 'admin_users_group_' ? 'active' : '' }}">Groupes</a>
+                        <a href="{{ path('admin_users_list') }}" class="{{ current_route starts with 'admin_users_' and not (current_route starts with 'admin_users_group_') and not (current_route starts with 'admin_users_role_') ? 'active' : '' }}">
+                            {{ ux_icon('fa-solid:user') }}
+                            <span>Utilisateurs</span>
+                        </a>
+                        <a href="{{ path('admin_users_group_list') }}" class="{{ current_route starts with 'admin_users_group_' ? 'active' : '' }}">
+                            {{ ux_icon('fa-solid:user-shield') }}
+                            <span>Groupes</span>
+                        </a>
                     </div>
                 </div>
-                <div class="nav-item">
+
+                <div class="nav-item {{ is_tags_section ? 'is-open' : 'is-open' }}">
                     <div class="nav-item-header">
-                        <span>Tags</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <span class="nav-item-label">
+                            <span class="nav-icon">{{ ux_icon('fa-solid:tags') }}</span>
+                            <span class="nav-text">Tags</span>
+                        </span>
+                        {{ ux_icon('fa-solid:chevron-down', {class: 'nav-chevron'}) }}
                     </div>
                     <div class="nav-item-content">
-                        <a href="{{ path('admin_tags_list') }}" class="{{ current_route starts with 'admin_tags_' ? 'active' : '' }}">Gestion des Tags</a>
+                        <a href="{{ path('admin_tags_list') }}" class="{{ current_route starts with 'admin_tags_' ? 'active' : '' }}">
+                            {{ ux_icon('fa-solid:hashtag') }}
+                            <span>Gestion des Tags</span>
+                        </a>
                     </div>
                 </div>
             </div>

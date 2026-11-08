@@ -4,11 +4,11 @@
     {% if this.flashSuccess %}
         <div class="alert alert-success">
             <div class="alert-content">
-                <i class="fas fa-check-circle"></i>
+                {{ ux_icon('fa-solid:check-circle') }}
                 <span>{{ this.flashSuccess }}</span>
             </div>
             <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
-                <i class="fas fa-times"></i>
+                {{ ux_icon('fa-solid:times') }}
             </button>
         </div>
     {% endif %}
@@ -16,11 +16,11 @@
     {% if this.flashError %}
         <div class="alert alert-danger">
             <div class="alert-content">
-                <i class="fas fa-exclamation-triangle"></i>
+                {{ ux_icon('fa-solid:exclamation-triangle') }}
                 <span>{{ this.flashError }}</span>
             </div>
             <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
-                <i class="fas fa-times"></i>
+                {{ ux_icon('fa-solid:times') }}
             </button>
         </div>
     {% endif %}
@@ -31,7 +31,7 @@
             <div class="filter-field">
                 <label for="filter-name">Nom du tag</label>
                 <div class="input-with-icon">
-                    <i class="fas fa-search"></i>
+                    {{ ux_icon('fa-solid:search') }}
                     <input
                         id="filter-name"
                         type="text"
@@ -45,7 +45,7 @@
             <div class="filter-field">
                 <label for="filter-slug">Slug</label>
                 <div class="input-with-icon">
-                    <i class="fas fa-tag"></i>
+                    {{ ux_icon('fa-solid:tag') }}
                     <input
                         id="filter-slug"
                         type="text"
@@ -75,7 +75,7 @@
                     data-live-action-param="resetFilters"
                     title="Réinitialiser les filtres"
                 >
-                    <i class="fas fa-undo"></i> Réinitialiser
+                    {{ ux_icon('fa-solid:undo') }} Réinitialiser
                 </button>
             </div>
         </div>
@@ -87,11 +87,11 @@
         <div class="table-toolbar">
             <div class="toolbar-left">
                 <span class="tags-count-badge">
-                    <i class="fas fa-tags"></i>
+                    {{ ux_icon('fa-solid:tags') }}
                     <strong>{{ paginatedData.totalItems }}</strong> tag{{ paginatedData.totalItems > 1 ? 's' : '' }} au total
                 </span>
                 <span class="loading-indicator" data-loading>
-                    <i class="fas fa-spinner fa-spin"></i> Chargement...
+                    {{ ux_icon('fa-solid:spinner', {class: 'fa-spin'}) }} Chargement...
                 </span>
             </div>
 
@@ -102,7 +102,7 @@
                     data-action="live#action"
                     data-live-action-param="openCreateModal"
                 >
-                    <i class="fas fa-plus"></i> Créer un tag
+                    {{ ux_icon('fa-solid:plus') }} Créer un tag
                 </button>
             </div>
         </div>
@@ -152,7 +152,7 @@
                                     data-live-action-param="openEditModal"
                                     data-live-id-param="{{ tag.id }}"
                                 >
-                                    <i class="fas fa-pen"></i> Modifier
+                                    {{ ux_icon('fa-solid:pen') }} Modifier
                                 </button>
                                 <button
                                     type="button"
@@ -163,7 +163,7 @@
                                     data-live-id-param="{{ tag.id }}"
                                     data-live-name-param="{{ tag.name }}"
                                 >
-                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                    {{ ux_icon('fa-solid:trash-alt') }} Supprimer
                                 </button>
                             </td>
                         </tr>
@@ -171,7 +171,7 @@
                         <tr>
                             <td colspan="6" class="empty-state">
                                 <div class="empty-state-inner">
-                                    <i class="fas fa-folder-open empty-icon"></i>
+                                    {{ ux_icon('fa-solid:folder-open', {class: 'empty-icon'}) }}
                                     <h3>Aucun tag trouvé</h3>
                                     <p>Aucun tag ne correspond à vos critères de recherche.</p>
                                     {% if this.searchName or this.searchSlug or this.searchEntityType %}
@@ -181,7 +181,7 @@
                                             data-action="live#action"
                                             data-live-action-param="resetFilters"
                                         >
-                                            <i class="fas fa-undo"></i> Réinitialiser les filtres
+                                            {{ ux_icon('fa-solid:undo') }} Réinitialiser les filtres
                                         </button>
                                     {% else %}
                                         <button
@@ -190,7 +190,7 @@
                                             data-action="live#action"
                                             data-live-action-param="openCreateModal"
                                         >
-                                            <i class="fas fa-plus"></i> Créer le premier tag
+                                            {{ ux_icon('fa-solid:plus') }} Créer le premier tag
                                         </button>
                                     {% endif %}
                                 </div>
@@ -230,7 +230,7 @@
                                     data-live-action-param="setPage"
                                     data-live-page-param="{{ this.page - 1 }}"
                                 >
-                                    <i class="fas fa-chevron-left"></i> Précédent
+                                    {{ ux_icon('fa-solid:chevron-left') }} Précédent
                                 </button>
                             </li>
 
@@ -261,7 +261,7 @@
                                     data-live-action-param="setPage"
                                     data-live-page-param="{{ this.page + 1 }}"
                                 >
-                                    Suivant <i class="fas fa-chevron-right"></i>
+                                    Suivant {{ ux_icon('fa-solid:chevron-right') }}
                                 </button>
                             </li>
                         </ul>
@@ -277,7 +277,7 @@
         <div class="modal-dialog-custom" role="dialog" aria-modal="true" aria-labelledby="modal-tag-title">
             <div class="modal-header-custom">
                 <h3 id="modal-tag-title">
-                    <i class="fas {{ this.editingId ? 'fa-edit' : 'fa-plus-circle' }}"></i>
+                    {{ ux_icon(this.editingId ? 'fa-solid:edit' : 'fa-solid:plus-circle') }}
                     {{ this.editingId ? 'Modifier le tag' : 'Créer un nouveau tag' }}
                 </h3>
                 <button
@@ -287,7 +287,7 @@
                     data-live-action-param="closeModal"
                     aria-label="Fermer"
                 >
-                    <i class="fas fa-times"></i>
+                    {{ ux_icon('fa-solid:times') }}
                 </button>
             </div>
 
@@ -365,7 +365,7 @@
                         type="submit"
                         class="btn-primary"
                     >
-                        <i class="fas fa-check"></i>
+                        {{ ux_icon('fa-solid:check') }}
                         {{ this.editingId ? 'Enregistrer les modifications' : 'Créer le tag' }}
                     </button>
                 </div>
@@ -379,7 +379,7 @@
         <div class="modal-dialog-custom modal-confirm-danger" role="dialog" aria-modal="true">
             <div class="modal-header-custom danger-header">
                 <h3>
-                    <i class="fas fa-exclamation-triangle"></i> Confirmer la suppression
+                    {{ ux_icon('fa-solid:exclamation-triangle') }} Confirmer la suppression
                 </h3>
                 <button
                     type="button"
@@ -387,7 +387,7 @@
                     data-action="live#action"
                     data-live-action-param="cancelDelete"
                 >
-                    <i class="fas fa-times"></i>
+                    {{ ux_icon('fa-solid:times') }}
                 </button>
             </div>
             <div class="modal-body-custom">
@@ -395,7 +395,7 @@
                     Êtes-vous certain de vouloir supprimer le tag <strong>« {{ this.deletingName }} »</strong> ?
                 </p>
                 <p class="text-danger-warning">
-                    <i class="fas fa-info-circle"></i> Cette action est irréversible. Les entités associées ne contiendront plus ce tag.
+                    {{ ux_icon('fa-solid:info-circle') }} Cette action est irréversible. Les entités associées ne contiendront plus ce tag.
                 </p>
             </div>
             <div class="modal-footer-custom">
@@ -413,7 +413,7 @@
                     data-action="live#action"
                     data-live-action-param="executeDelete"
                 >
-                    <i class="fas fa-trash-alt"></i> Confirmer la suppression
+                    {{ ux_icon('fa-solid:trash-alt') }} Confirmer la suppression
                 </button>
             </div>
         </div>

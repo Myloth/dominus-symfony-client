@@ -1,24 +1,34 @@
-// Colors
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$success-color: #28a745;
-$danger-color: #dc3545;
-$warning-color: #ffc107;
-$info-color: #17a2b8;
+// Colors — Modern Slate & Cyan/Teal Palette
+$primary-color: #2689aa;
+$primary-hover: #1e708c;
+$primary-light: #e0f2fe;
+$accent-glow: #38bdf8;
 
-$text-dark: #333;
-$text-muted: #6c757d;
-$text-light: #f8f9fa;
+$secondary-color: #64748b;
+$success-color: #10b981;
+$danger-color: #ef4444;
+$warning-color: #f59e0b;
+$info-color: #0ea5e9;
 
-$background-white: #fff;
-$background-light: #f8f9fa;
-$background-dark: #343a40;
+$text-dark: #0f172a;
+$text-muted: #64748b;
+$text-light: #f8fafc;
 
-$border-color: #dee2e6;
+$background-white: #ffffff;
+$background-light: #f1f5f9;
+$background-dark: #0f172a;
 
-$header-bg: #fff;
-$sidebar-bg: #343a40;
-$sidebar-text: #f8f9fa;
+$border-color: #e2e8f0;
+
+$header-bg: #ffffff;
+$sidebar-bg: #0f172a;
+$sidebar-bg-end: #1e293b;
+$sidebar-text: #f8fafc;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+$shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+$shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
 
 // Breakpoints
 $breakpoint-sm: 576px;
@@ -41,11 +51,11 @@ $font-size-lg: 18px;
 $font-size-xl: 24px;
 
 // Border radius
-$border-radius-sm: 4px;
-$border-radius-md: 6px;
-$border-radius-lg: 8px;
+$border-radius-sm: 6px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
 
 // Transitions
-$transition-fast: 0.2s;
-$transition-normal: 0.3s;
-$transition-slow: 0.5s;
+$transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
