@@ -3,19 +3,60 @@
 
 .page-header {
     background: variables.$background-white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 28px;
+    border-radius: variables.$border-radius-lg;
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: variables.$shadow-md;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #38bdf8 0%, #2689aa 100%);
+    }
+
+    .page-header-title {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        .page-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: variables.$primary-color;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            i, svg {
+                font-size: 0.7rem;
+                width: 0.75rem;
+                height: 0.75rem;
+            }
+        }
+    }
 
     h1 {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         color: variables.$text-dark;
-        font-size: 1.8em;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
         margin: 0;
+        line-height: 1.25;
     }
 
     .page-actions {
@@ -24,74 +65,31 @@
         align-items: center;
 
         .btn-primary {
-          @include mixins.nav-button;
-          background: rgb(38, 137, 170);
+            @include mixins.nav-button;
         }
 
         .btn-secondary {
-            @include mixins.nav-button;
-        }
-    }
-}
-
-.search-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    background: variables.$background-white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-
-    .search-form {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        inline-size: 100%; // Prendre toute la largeur de la section
-
-    }
-
-    .form-row {
-        display: flex;
-        flex: 1;
-        gap: 10px;
-    }
-
-    .form-group {
-        width: calc(25% - 10px);
-        flex: 0 0 calc(25% - 10px); // 4 colonnes avec espacement
-        margin-bottom: 15px;
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: variables.$text-dark;
-        }
-        input, select {
-            padding: 8px;
+            padding: 9px 18px;
             border: 1px solid variables.$border-color;
-            border-radius: 4px;
-            width: 100%;
-        }
-        input[readonly] {
-            background-color: #f5f5f5;
-            border-color: #e0e0e0;
-            cursor: not-allowed;
-            color: #666;
-        }
-    }
-
-    .search-actions {
-        flex: 1 1 100%; // S'assurer que le bouton de recherche occupe toute la largeur
-        display: flex;
-        justify-content: flex-end;
-        
-        .btn-primary {
-            @include mixins.nav-button;
-            display: flex;
-            gap: 10px;
+            border-radius: variables.$border-radius-sm;
+            cursor: pointer;
+            font-weight: 600;
+            background-color: #f8fafc;
+            color: #475569;
+            font-size: 13.5px;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all variables.$transition-fast;
+
+            &:hover {
+                background-color: #f1f5f9;
+                border-color: #cbd5e1;
+                color: variables.$text-dark;
+                transform: translateY(-1px);
+            }
         }
     }
 }

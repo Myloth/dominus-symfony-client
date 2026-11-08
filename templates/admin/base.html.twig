@@ -7,7 +7,12 @@
 
 {% block header %}
     <header class="page-header">
-        <h1>{{ page_title }}</h1>
+        <div class="page-header-title">
+            <span class="page-eyebrow">
+                {{ ux_icon('fa-solid:shield-alt') }} Administration Dominus
+            </span>
+            <h1>{{ page_title|default('Administration') }}</h1>
+        </div>
         {% block pageActions %}{% endblock %}
     </header>
 {% endblock %}

@@ -8,7 +8,7 @@
         <div class="login-card">
             <div class="login-header">
                 <div class="login-logo">
-                    <i class="fas fa-shield-alt"></i>
+                    {{ ux_icon('fa-solid:shield-alt') }}
                 </div>
                 <h1>Dominus</h1>
                 <p>Panneau d'administration</p>
@@ -16,7 +16,7 @@
 
             {% if error %}
                 <div class="login-alert login-alert-error" role="alert">
-                    <i class="fas fa-exclamation-circle"></i>
+                    {{ ux_icon('fa-solid:exclamation-circle') }}
                     <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
                 </div>
             {% endif %}
@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <label for="username">Nom d'utilisateur</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
+                        {{ ux_icon('fa-solid:user', {class: 'input-icon'}) }}
                         <input
                             type="text"
                             id="username"
@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
+                        {{ ux_icon('fa-solid:lock', {class: 'input-icon'}) }}
                         <input
                             type="password"
                             id="password"
@@ -59,7 +59,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                    {{ ux_icon('fa-solid:sign-in-alt') }} Se connecter
                 </button>
             </form>
         </div>

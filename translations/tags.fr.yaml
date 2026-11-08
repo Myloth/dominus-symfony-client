@@ -1,0 +1,55 @@
+tags:
+  listing:
+    title: "Gestion des Tags"
+    count: "%count% tag au total|%count% tags au total"
+    button:
+      add: "Créer un tag"
+      reset: "Réinitialiser"
+    filters:
+      name: "Nom du tag"
+      slug: "Slug"
+      entityType: "Type d'entité"
+      all_types: "Tous les types"
+    header:
+      name: "Nom"
+      slug: "Slug"
+      entityType: "Type d'entité"
+      category: "Catégorie"
+      createdAt: "Date de création"
+      actions: "Actions"
+    empty:
+      title: "Aucun tag trouvé"
+      description: "Aucun tag ne correspond à vos critères de recherche."
+    actions:
+      edit: "Modifier"
+      delete: "Supprimer"
+    pagination:
+      info: "Affichage de %start% à %end% sur %total% tags"
+      per_page: "Par page :"
+      previous: "Précédent"
+      next: "Suivant"
+  form:
+    create_title: "Créer un nouveau tag"
+    edit_title: "Modifier le tag"
+    name: "Nom"
+    name_placeholder: "ex: Quête Principale"
+    slug: "Slug"
+    slug_placeholder: "ex: quete-principale"
+    auto_slug: "Générer automatiquement"
+    slug_hint: "Code unique utilisé pour les filtres API."
+    entityType: "Type d'entité"
+    category: "Catégorie"
+    category_optional: "(optionnel)"
+    category_placeholder: "ex: histoire, boss..."
+    category_hint: "Permet de sous-classer les tags pour une même entité."
+    buttons:
+      cancel: "Annuler"
+      save_create: "Créer le tag"
+      save_edit: "Enregistrer les modifications"
+  delete:
+    confirm_title: "Confirmer la suppression"
+    confirm_message: "Êtes-vous certain de vouloir supprimer le tag « %name% » ?"
+    warning: "Cette action est irréversible. Les entités associées ne contiendront plus ce tag."
+    buttons:
+      cancel: "Annuler"
+      confirm: "Confirmer la suppression"

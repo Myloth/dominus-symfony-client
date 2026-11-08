@@ -75,16 +75,33 @@ class GroupController extends CrudController
             ]);
     }
 
-    private function renderData(array $groups)
+    private function renderData(array $groups): array
     {
         $results = [];
         /** @var Group $group */
         foreach ($groups as $group) {
+            $rolesHtml = '';
+            foreach ($group->roles ?? [] as $role) {
+                if ($role?->code) {
+                    $isAdmin = str_contains($role->code, 'ADMIN');
+                    $badgeClass = $isAdmin ? 'role-badge role-badge-admin' : 'role-badge';
+                    $icon = $isAdmin ? 'fa-shield-alt' : 'fa-user-tag';
+                    $rolesHtml .= '<span class="' . $badgeClass . '"><i class="fas ' . $icon . '"></i> ' . htmlspecialchars($role->code) . '</span> ';
+                }
+            }
+            if ($rolesHtml === '') {
+                $rolesHtml = '<span class="text-muted">-</span>';
+            }
+
+            $actionsHtml = '<div class="col-actions text-right">'
+                . '<a href="' . $this->generateUrl('admin_users_group_new') . '" class="action-btn action-edit" title="Modifier"><i class="fas fa-pen"></i> Modifier</a>'
+                . '</div>';
+
             $line = [
-                'id' => $group->id,
-                'name' => $group->name,
-                'roles' => implode(',', array_map(function ($role) { return $role->code; }, $group->roles)),
-                'actions' => '',
+                'id' => '<code class="tag-slug-pill">#' . $group->id . '</code>',
+                'name' => '<span class="col-name"><strong>' . htmlspecialchars($group->name ?? '') . '</strong></span>',
+                'roles' => $rolesHtml,
+                'actions' => $actionsHtml,
             ];
 
             $results[] = $line;

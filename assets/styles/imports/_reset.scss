@@ -1,4 +1,12 @@
-  @use "./variables" ;
+@use "./variables";
+
+:root {
+    --primary-color: #{variables.$primary-color};
+    --border-color: #{variables.$border-color};
+    --text-dark: #{variables.$text-dark};
+    --danger-color: #{variables.$danger-color};
+    --success-color: #{variables.$success-color};
+}
 
 *, ::before, ::after {
     margin: 0;
@@ -7,11 +15,22 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background-color: variables.$background-light;
+    background-image: radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.06) 0px, transparent 50%),
+                      radial-gradient(at 0% 100%, rgba(38, 137, 170, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: variables.$text-dark;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-  display: flex;
-  min-height: 100vh;
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
 }
