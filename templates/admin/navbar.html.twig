@@ -35,6 +35,7 @@
         {% set current_route = app.request.attributes.get('_route')|default('') %}
         {% set is_users_section = current_route starts with 'admin_users_' %}
         {% set is_tags_section = current_route starts with 'admin_tags_' %}
+        {% set is_events_section = current_route starts with 'admin_events_' %}
 
         <div class="nav-menu">
             <div class="nav-section">
@@ -72,6 +73,22 @@
                         <a href="{{ path('admin_tags_list') }}" class="{{ current_route starts with 'admin_tags_' ? 'active' : '' }}">
                             {{ ux_icon('fa-solid:hashtag') }}
                             <span>Gestion des Tags</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-item {{ is_events_section ? 'is-open' : 'is-open' }}">
+                    <div class="nav-item-header">
+                        <span class="nav-item-label">
+                            <span class="nav-icon">{{ ux_icon('fa-solid:calendar-alt') }}</span>
+                            <span class="nav-text">Événements</span>
+                        </span>
+                        {{ ux_icon('fa-solid:chevron-down', {class: 'nav-chevron'}) }}
+                    </div>
+                    <div class="nav-item-content">
+                        <a href="{{ path('admin_events_list') }}" class="{{ current_route starts with 'admin_events_' ? 'active' : '' }}">
+                            {{ ux_icon('fa-solid:calendar-check') }}
+                            <span>Gestion des Événements</span>
                         </a>
                     </div>
                 </div>
