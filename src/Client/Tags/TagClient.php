@@ -3,6 +3,7 @@
 namespace App\Client\Tags;
 
 use App\Client\AbstractClient;
+use App\Dto\Tags\EntityType;
 use App\Dto\Tags\Tag;
 use App\Dto\Tags\TagPaginatedResponse;
 use App\Dto\Tags\TagSearch;
@@ -28,7 +29,32 @@ class TagClient extends AbstractClient
      */
     public function getAll(): array
     {
-        return $this->request('GET', 'tags', Tag::class . '[]');
+        return $this->request('GET', 'tags', Tag::class . '[]') ?? [];
+    }
+
+    /**
+     * @return list<EntityType>
+     */
+    public function getEntityTypes(): array
+    {
+        return $this->request('GET', 'entity_types', EntityType::class . '[]') ?? [];
+    }
+
+    /**
+     * @return list<Tag>
+     */
+    public function getByEntityType(string $entityType): array
+    {
+        $search = new TagSearch();
+        $search->entityType = $entityType;
+        $search->itemsPerPage = 100;
+
+        $response = $this->getPaginated($search);
+
+        return array_values(array_filter(
+            $response->items,
+            static fn (Tag $tag): bool => $tag->hasEntityTypeSlug($entityType)
+        ));
     }
 
     public function get(int $id): Tag
@@ -40,7 +66,7 @@ class TagClient extends AbstractClient
     {
         $payload = [
             'name' => $tag->name,
-            'entityType' => $tag->entityType,
+            'entityTypes' => $tag->getEntityTypeIris(),
             'category' => $tag->category !== null && trim($tag->category) !== '' ? trim($tag->category) : null,
         ];
 
@@ -57,7 +83,7 @@ class TagClient extends AbstractClient
     {
         $payload = [
             'name' => $tag->name,
-            'entityType' => $tag->entityType,
+            'entityTypes' => $tag->getEntityTypeIris(),
             'category' => $tag->category !== null && trim($tag->category) !== '' ? trim($tag->category) : null,
         ];
 

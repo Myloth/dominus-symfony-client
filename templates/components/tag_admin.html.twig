@@ -1,23 +1,12 @@
 <div {{ attributes }} class="tag-admin-container">
+    {% set availableEntityTypes = this.availableEntityTypes %}
 
     {# Notifications #}
-    {% if this.flashSuccess %}
-        <div class="alert alert-success">
+    {% if this.flash %}
+        <div class="alert alert-{{ this.flash.type }}">
             <div class="alert-content">
-                {{ ux_icon('fa-solid:check-circle') }}
-                <span>{{ this.flashSuccess }}</span>
-            </div>
-            <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
-                {{ ux_icon('fa-solid:times') }}
-            </button>
-        </div>
-    {% endif %}
-
-    {% if this.flashError %}
-        <div class="alert alert-danger">
-            <div class="alert-content">
-                {{ ux_icon('fa-solid:exclamation-triangle') }}
-                <span>{{ this.flashError }}</span>
+                {{ ux_icon(this.flash.type == 'success' ? 'fa-solid:check-circle' : 'fa-solid:exclamation-triangle') }}
+                <span>{{ this.flash.message }}</span>
             </div>
             <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
                 {{ ux_icon('fa-solid:times') }}
@@ -36,8 +25,8 @@
                         id="filter-name"
                         type="text"
                         placeholder="Rechercher par nom..."
-                        data-model="debounce(250)|searchName"
-                        value="{{ this.searchName }}"
+                        data-model="debounce(250)|search.name"
+                        value="{{ this.search.name }}"
                     >
                 </div>
             </div>
@@ -50,18 +39,20 @@
                         id="filter-slug"
                         type="text"
                         placeholder="Rechercher par slug..."
-                        data-model="debounce(250)|searchSlug"
-                        value="{{ this.searchSlug }}"
+                        data-model="debounce(250)|search.slug"
+                        value="{{ this.search.slug }}"
                     >
                 </div>
             </div>
 
             <div class="filter-field">
                 <label for="filter-entity-type">Type d'entité</label>
-                <select id="filter-entity-type" data-model="searchEntityType">
+                <select id="filter-entity-type" data-model="search.entityType">
                     <option value="">Tous les types</option>
-                    {% for key, label in this.availableEntityTypes %}
-                        <option value="{{ key }}" {{ this.searchEntityType == key ? 'selected' : '' }}>{{ label }}</option>
+                    {% for entityType in availableEntityTypes %}
+                        <option value="{{ entityType.slug }}" {{ this.search.entityType == entityType.slug ? 'selected' : '' }}>
+                            {{ entityType.name }} ({{ entityType.slug }})
+                        </option>
                     {% endfor %}
                 </select>
             </div>
@@ -113,7 +104,7 @@
                     <tr>
                         <th>Nom</th>
                         <th>Slug</th>
-                        <th>Type d'entité</th>
+                        <th>Types d'entité</th>
                         <th>Catégorie</th>
                         <th>Date de création</th>
                         <th class="text-right">Actions</th>
@@ -129,9 +120,18 @@
                                 <code class="tag-slug-pill">{{ tag.slug }}</code>
                             </td>
                             <td class="col-entity">
-                                <span class="entity-badge entity-badge-{{ tag.entityType }}">
-                                    {{ tag.entityType }}
-                                </span>
+                                {% set tagEntityTypes = tag.normalizedEntityTypes %}
+                                {% if tagEntityTypes is not empty %}
+                                    <div class="entity-badges-list">
+                                        {% for entityType in tagEntityTypes %}
+                                            <span class="entity-badge entity-badge-{{ entityType.slug }}">
+                                                {{ entityType.name ?? entityType.slug }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
                             </td>
                             <td class="col-category">
                                 {% if tag.category %}
@@ -174,7 +174,7 @@
                                     {{ ux_icon('fa-solid:folder-open', {class: 'empty-icon'}) }}
                                     <h3>Aucun tag trouvé</h3>
                                     <p>Aucun tag ne correspond à vos critères de recherche.</p>
-                                    {% if this.searchName or this.searchSlug or this.searchEntityType %}
+                                    {% if this.hasActiveFilters %}
                                         <button
                                             type="button"
                                             class="btn-reset-filters"
@@ -211,11 +211,11 @@
                 <div class="pagination-controls">
                     <div class="per-page-selector">
                         <label for="items-per-page">Par page :</label>
-                        <select id="items-per-page" data-model="itemsPerPage">
-                            <option value="5" {{ this.itemsPerPage == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ this.itemsPerPage == 10 ? 'selected' : '' }}>10</option>
-                            <option value="25" {{ this.itemsPerPage == 25 ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ this.itemsPerPage == 50 ? 'selected' : '' }}>50</option>
+                        <select id="items-per-page" data-model="search.itemsPerPage">
+                            <option value="5" {{ this.search.itemsPerPage == 5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ this.search.itemsPerPage == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ this.search.itemsPerPage == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ this.search.itemsPerPage == 50 ? 'selected' : '' }}>50</option>
                         </select>
                     </div>
 
@@ -228,18 +228,18 @@
                                     {{ not paginatedData.hasPreviousPage ? 'disabled' : '' }}
                                     data-action="live#action"
                                     data-live-action-param="setPage"
-                                    data-live-page-param="{{ this.page - 1 }}"
+                                    data-live-page-param="{{ this.search.page - 1 }}"
                                 >
                                     {{ ux_icon('fa-solid:chevron-left') }} Précédent
                                 </button>
                             </li>
 
                             {% for p in 1..paginatedData.totalPages %}
-                                {% if p == 1 or p == paginatedData.totalPages or (p >= this.page - 2 and p <= this.page + 2) %}
+                                {% if p == 1 or p == paginatedData.totalPages or (p >= this.search.page - 2 and p <= this.search.page + 2) %}
                                     <li>
                                         <button
                                             type="button"
-                                            class="page-link {{ p == this.page ? 'active' : '' }}"
+                                            class="page-link {{ p == this.search.page ? 'active' : '' }}"
                                             data-action="live#action"
                                             data-live-action-param="setPage"
                                             data-live-page-param="{{ p }}"
@@ -247,7 +247,7 @@
                                             {{ p }}
                                         </button>
                                     </li>
-                                {% elseif p == this.page - 3 or p == this.page + 3 %}
+                                {% elseif p == this.search.page - 3 or p == this.search.page + 3 %}
                                     <li class="page-ellipsis">...</li>
                                 {% endif %}
                             {% endfor %}
@@ -259,7 +259,7 @@
                                     {{ not paginatedData.hasNextPage ? 'disabled' : '' }}
                                     data-action="live#action"
                                     data-live-action-param="setPage"
-                                    data-live-page-param="{{ this.page + 1 }}"
+                                    data-live-page-param="{{ this.search.page + 1 }}"
                                 >
                                     Suivant {{ ux_icon('fa-solid:chevron-right') }}
                                 </button>
@@ -277,8 +277,8 @@
         <div class="modal-dialog-custom" role="dialog" aria-modal="true" aria-labelledby="modal-tag-title">
             <div class="modal-header-custom">
                 <h3 id="modal-tag-title">
-                    {{ ux_icon(this.editingId ? 'fa-solid:edit' : 'fa-solid:plus-circle') }}
-                    {{ this.editingId ? 'Modifier le tag' : 'Créer un nouveau tag' }}
+                    {{ ux_icon(this.form.id ? 'fa-solid:edit' : 'fa-solid:plus-circle') }}
+                    {{ this.form.id ? 'Modifier le tag' : 'Créer un nouveau tag' }}
                 </h3>
                 <button
                     type="button"
@@ -303,16 +303,16 @@
                             id="form-tag-name"
                             type="text"
                             placeholder="ex: Quête Principale"
-                            data-model="formName"
-                            value="{{ this.formName }}"
+                            data-model="form.name"
+                            value="{{ this.form.name }}"
                             autofocus
                         >
                         {% if this.validationErrors.name is defined %}
                             <span class="field-error-msg">{{ this.validationErrors.name }}</span>
                         {% else %}
                             <small class="field-hint">
-                                {% if this.editingId and this.editingSlug %}
-                                    Le slug est généré par l'API (slug actuel : <code>{{ this.editingSlug }}</code>).
+                                {% if this.form.id and this.form.slug %}
+                                    Le slug est généré par l'API (slug actuel : <code>{{ this.form.slug }}</code>).
                                 {% else %}
                                     Le slug sera généré automatiquement par l'API à partir du nom.
                                 {% endif %}
@@ -320,18 +320,39 @@
                         {% endif %}
                     </div>
 
-                    {# Type d'entité field #}
-                    <div class="modal-form-group {{ this.validationErrors.entityType is defined ? 'has-error' : '' }}">
-                        <label for="form-tag-entity-type">
-                            Type d'entité <span class="required-star">*</span>
+                    {# Types d'entité field (multi-select with TomSelect) #}
+                    <div class="modal-form-group {{ this.validationErrors.entityTypes is defined ? 'has-error' : '' }}">
+                        <label for="form-tag-entity-types">
+                            Types d'entité <span class="required-star">*</span>
                         </label>
-                        <select id="form-tag-entity-type" data-model="formEntityType">
-                            {% for key, label in this.availableEntityTypes %}
-                                <option value="{{ key }}" {{ this.formEntityType == key ? 'selected' : '' }}>{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                        {% if this.validationErrors.entityType is defined %}
-                            <span class="field-error-msg">{{ this.validationErrors.entityType }}</span>
+                        {% if availableEntityTypes is not empty %}
+                            <div class="tom-select-container" data-live-ignore>
+                                <select
+                                    id="form-tag-entity-types"
+                                    data-controller="tom-select"
+                                    data-tom-select-placeholder-value="Rechercher et sélectionner des types d'entité..."
+                                    data-model="norender|form.entityTypes"
+                                    multiple
+                                >
+                                    {% for entityType in availableEntityTypes %}
+                                        {% set typeIri = entityType.iri %}
+                                        <option value="{{ typeIri }}" {{ typeIri in this.form.entityTypes ? 'selected' : '' }}>
+                                            {{ entityType.name }} ({{ entityType.slug }})
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% else %}
+                            <div class="empty-entity-types-notice">
+                                {{ ux_icon('fa-solid:info-circle') }}
+                                <span>Aucun type d'entité n'a pu être récupéré depuis l'API.</span>
+                            </div>
+                        {% endif %}
+
+                        {% if this.validationErrors.entityTypes is defined %}
+                            <span class="field-error-msg">{{ this.validationErrors.entityTypes }}</span>
+                        {% else %}
+                            <small class="field-hint">Sélectionnez un ou plusieurs types d'entité pour ce tag.</small>
                         {% endif %}
                     </div>
 
@@ -344,8 +365,8 @@
                             id="form-tag-category"
                             type="text"
                             placeholder="ex: histoire, boss, journaliere..."
-                            data-model="formCategory"
-                            value="{{ this.formCategory }}"
+                            data-model="form.category"
+                            value="{{ this.form.category }}"
                         >
                         <small class="field-hint">Permet de sous-classer les tags pour une même entité.</small>
                     </div>
@@ -366,7 +387,7 @@
                         class="btn-primary"
                     >
                         {{ ux_icon('fa-solid:check') }}
-                        {{ this.editingId ? 'Enregistrer les modifications' : 'Créer le tag' }}
+                        {{ this.form.id ? 'Enregistrer les modifications' : 'Créer le tag' }}
                     </button>
                 </div>
             </form>
@@ -374,7 +395,7 @@
     {% endif %}
 
     {# Modal Confirmation Delete #}
-    {% if this.isDeleteConfirmOpen %}
+    {% if this.deletingTag %}
         <div class="modal-backdrop-custom" data-action="click->live#action" data-live-action-param="cancelDelete"></div>
         <div class="modal-dialog-custom modal-confirm-danger" role="dialog" aria-modal="true">
             <div class="modal-header-custom danger-header">
@@ -392,7 +413,7 @@
             </div>
             <div class="modal-body-custom">
                 <p>
-                    Êtes-vous certain de vouloir supprimer le tag <strong>« {{ this.deletingName }} »</strong> ?
+                    Êtes-vous certain de vouloir supprimer le tag <strong>« {{ this.deletingTag.name }} »</strong> ?
                 </p>
                 <p class="text-danger-warning">
                     {{ ux_icon('fa-solid:info-circle') }} Cette action est irréversible. Les entités associées ne contiendront plus ce tag.
