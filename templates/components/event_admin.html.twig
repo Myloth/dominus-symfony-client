@@ -1,0 +1,526 @@
+<div {{ attributes }} class="event-admin-container">
+
+    {# Notifications #}
+    {% if this.flash %}
+        <div class="alert alert-{{ this.flash.type }}">
+            <div class="alert-content">
+                {{ ux_icon(this.flash.type == 'success' ? 'fa-solid:check-circle' : 'fa-solid:exclamation-triangle') }}
+                <span>{{ this.flash.message }}</span>
+            </div>
+            <button type="button" class="alert-close" data-action="live#action" data-live-action-param="dismissFlash">
+                {{ ux_icon('fa-solid:times') }}
+            </button>
+        </div>
+    {% endif %}
+
+    {# Filter & Search Bar #}
+    <section class="event-search-card">
+        <div class="search-fields-grid">
+            <div class="filter-field">
+                <label for="filter-event-name">Nom de l'événement</label>
+                <div class="input-with-icon">
+                    {{ ux_icon('fa-solid:search') }}
+                    <input
+                        id="filter-event-name"
+                        type="text"
+                        placeholder="Rechercher par nom..."
+                        data-model="debounce(250)|search.name"
+                        value="{{ this.search.name }}"
+                    >
+                </div>
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-event-active">Statut</label>
+                <select id="filter-event-active" data-model="search.active">
+                    <option value="" {{ this.search.active == '' ? 'selected' : '' }}>Tous les statuts</option>
+                    <option value="1" {{ this.search.active == '1' ? 'selected' : '' }}>Actif uniquement</option>
+                    <option value="0" {{ this.search.active == '0' ? 'selected' : '' }}>Inactif uniquement</option>
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-event-period">Période</label>
+                <select id="filter-event-period" data-model="search.period">
+                    <option value="" {{ this.search.period == '' ? 'selected' : '' }}>Toutes les périodes</option>
+                    {% for key, label in this.availablePeriods %}
+                        <option value="{{ key }}" {{ this.search.period == key ? 'selected' : '' }}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-event-start">Début (à partir du)</label>
+                <input
+                    id="filter-event-start"
+                    type="date"
+                    data-model="search.startDate"
+                    value="{{ this.search.startDate }}"
+                >
+            </div>
+
+            <div class="filter-field">
+                <label for="filter-event-end">Fin (jusqu'au)</label>
+                <input
+                    id="filter-event-end"
+                    type="date"
+                    data-model="search.endDate"
+                    value="{{ this.search.endDate }}"
+                >
+            </div>
+
+            <div class="filter-actions-col">
+                <label>&nbsp;</label>
+                <button
+                    type="button"
+                    class="btn-reset-filters"
+                    data-action="live#action"
+                    data-live-action-param="resetFilters"
+                    title="Réinitialiser les filtres"
+                >
+                    {{ ux_icon('fa-solid:undo') }} Réinitialiser
+                </button>
+            </div>
+        </div>
+    </section>
+
+    {# Table Card #}
+    {% set paginatedData = this.events %}
+    {% set tagsMap = this.eventTagsMap %}
+    <section class="event-table-card">
+        <div class="table-toolbar">
+            <div class="toolbar-left">
+                <span class="events-count-badge">
+                    {{ ux_icon('fa-solid:calendar-alt') }}
+                    <strong>{{ paginatedData.totalItems }}</strong> événement{{ paginatedData.totalItems > 1 ? 's' : '' }} au total
+                </span>
+                <span class="loading-indicator" data-loading>
+                    {{ ux_icon('fa-solid:spinner', {class: 'fa-spin'}) }} Chargement...
+                </span>
+            </div>
+
+            <div class="toolbar-right">
+                <button
+                    type="button"
+                    class="btn-primary"
+                    data-action="live#action"
+                    data-live-action-param="openCreateModal"
+                >
+                    {{ ux_icon('fa-solid:plus') }} Créer un événement
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="event-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Statut</th>
+                        <th>Description courte</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in paginatedData.items %}
+                        <tr>
+                            <td class="col-name">
+                                <div class="event-name-wrapper">
+                                    <strong>{{ event.name }}</strong>
+                                    {% set eventTagIris = event.tagIris %}
+                                    {% if eventTagIris is not empty %}
+                                        <div class="event-tags-inline">
+                                            {% for tagIri in eventTagIris %}
+                                                {% if tagsMap[tagIri] is defined %}
+                                                    <span class="event-tag-badge">
+                                                        {{ ux_icon('fa-solid:tag') }} {{ tagsMap[tagIri].name }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="event-tag-badge">
+                                                        {{ ux_icon('fa-solid:tag') }} {{ tagIri }}
+                                                    </span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="col-date">
+                                {% if event.startDate %}
+                                    <span class="date-pill">
+                                        {{ ux_icon('fa-solid:clock') }} {{ event.formattedStartDate }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-date">
+                                {% if event.endDate %}
+                                    <span class="date-pill">
+                                        {{ ux_icon('fa-solid:clock') }} {{ event.formattedEndDate }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-status">
+                                <button
+                                    type="button"
+                                    class="status-badge {{ event.active ? 'status-active' : 'status-inactive' }}"
+                                    title="Cliquer pour {{ event.active ? 'désactiver' : 'activer' }}"
+                                    data-action="live#action"
+                                    data-live-action-param="toggleActive"
+                                    data-live-id-param="{{ event.id }}"
+                                    data-live-current-state-param="{{ event.active ? '1' : '0' }}"
+                                >
+                                    <span class="status-dot"></span>
+                                    {{ event.active ? 'Actif' : 'Inactif' }}
+                                </button>
+                            </td>
+                            <td class="col-description" title="{{ event.description }}">
+                                {% if event.description %}
+                                    <span class="description-excerpt">{{ event.shortDescription(80) }}</span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-actions text-right">
+                                <button
+                                    type="button"
+                                    class="action-btn action-edit"
+                                    title="Modifier l'événement"
+                                    data-action="live#action"
+                                    data-live-action-param="openEditModal"
+                                    data-live-id-param="{{ event.id }}"
+                                >
+                                    {{ ux_icon('fa-solid:pen') }} Modifier
+                                </button>
+                                <button
+                                    type="button"
+                                    class="action-btn action-delete"
+                                    title="Supprimer l'événement"
+                                    data-action="live#action"
+                                    data-live-action-param="confirmDelete"
+                                    data-live-id-param="{{ event.id }}"
+                                    data-live-name-param="{{ event.name }}"
+                                >
+                                    {{ ux_icon('fa-solid:trash-alt') }} Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="empty-state-inner">
+                                    {{ ux_icon('fa-solid:folder-open', {class: 'empty-icon'}) }}
+                                    <h3>Aucun événement trouvé</h3>
+                                    <p>Aucun événement ne correspond à vos critères de recherche.</p>
+                                    {% if this.hasActiveFilters %}
+                                        <button
+                                            type="button"
+                                            class="btn-reset-filters"
+                                            data-action="live#action"
+                                            data-live-action-param="resetFilters"
+                                        >
+                                            {{ ux_icon('fa-solid:undo') }} Réinitialiser les filtres
+                                        </button>
+                                    {% else %}
+                                        <button
+                                            type="button"
+                                            class="btn-primary"
+                                            data-action="live#action"
+                                            data-live-action-param="openCreateModal"
+                                        >
+                                            {{ ux_icon('fa-solid:plus') }} Créer le premier événement
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {# Pagination Section #}
+        {% if paginatedData.totalItems > 0 %}
+            <div class="table-pagination-bar">
+                <div class="pagination-info">
+                    Affichage de <strong>{{ paginatedData.startIndex }}</strong> à <strong>{{ paginatedData.endIndex }}</strong> sur <strong>{{ paginatedData.totalItems }}</strong> événements
+                </div>
+
+                <div class="pagination-controls">
+                    <div class="per-page-selector">
+                        <label for="event-items-per-page">Par page :</label>
+                        <select id="event-items-per-page" data-model="search.itemsPerPage">
+                            <option value="5" {{ this.search.itemsPerPage == 5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ this.search.itemsPerPage == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ this.search.itemsPerPage == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ this.search.itemsPerPage == 50 ? 'selected' : '' }}>50</option>
+                        </select>
+                    </div>
+
+                    {% if paginatedData.totalPages > 1 %}
+                        <ul class="pagination-list">
+                            <li>
+                                <button
+                                    type="button"
+                                    class="page-link {{ not paginatedData.hasPreviousPage ? 'disabled' : '' }}"
+                                    {{ not paginatedData.hasPreviousPage ? 'disabled' : '' }}
+                                    data-action="live#action"
+                                    data-live-action-param="setPage"
+                                    data-live-page-param="{{ this.search.page - 1 }}"
+                                >
+                                    {{ ux_icon('fa-solid:chevron-left') }} Précédent
+                                </button>
+                            </li>
+
+                            {% for p in 1..paginatedData.totalPages %}
+                                {% if p == 1 or p == paginatedData.totalPages or (p >= this.search.page - 2 and p <= this.search.page + 2) %}
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="page-link {{ p == this.search.page ? 'active' : '' }}"
+                                            data-action="live#action"
+                                            data-live-action-param="setPage"
+                                            data-live-page-param="{{ p }}"
+                                        >
+                                            {{ p }}
+                                        </button>
+                                    </li>
+                                {% elseif p == this.search.page - 3 or p == this.search.page + 3 %}
+                                    <li class="page-ellipsis">...</li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <li>
+                                <button
+                                    type="button"
+                                    class="page-link {{ not paginatedData.hasNextPage ? 'disabled' : '' }}"
+                                    {{ not paginatedData.hasNextPage ? 'disabled' : '' }}
+                                    data-action="live#action"
+                                    data-live-action-param="setPage"
+                                    data-live-page-param="{{ this.search.page + 1 }}"
+                                >
+                                    Suivant {{ ux_icon('fa-solid:chevron-right') }}
+                                </button>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    {# Modal Create / Edit Event #}
+    {% if this.isModalOpen %}
+        {% set availableTags = this.eventTags %}
+        <div class="modal-backdrop-custom" data-action="click->live#action" data-live-action-param="closeModal"></div>
+        <div class="modal-dialog-custom modal-event-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-event-title">
+            <div class="modal-header-custom">
+                <h3 id="modal-event-title">
+                    {{ ux_icon(this.form.id ? 'fa-solid:edit' : 'fa-solid:plus-circle') }}
+                    {{ this.form.id ? 'Modifier l\'événement' : 'Créer un nouvel événement' }}
+                </h3>
+                <button
+                    type="button"
+                    class="modal-close-btn"
+                    data-action="live#action"
+                    data-live-action-param="closeModal"
+                    aria-label="Fermer"
+                >
+                    {{ ux_icon('fa-solid:times') }}
+                </button>
+            </div>
+
+            <form data-action="submit->live#action:prevent" data-live-action-param="save">
+                <div class="modal-body-custom">
+
+                    {# Nom field #}
+                    <div class="modal-form-group {{ this.validationErrors.name is defined ? 'has-error' : '' }}">
+                        <label for="form-event-name">
+                            Nom <span class="required-star">*</span>
+                        </label>
+                        <input
+                            id="form-event-name"
+                            type="text"
+                            placeholder="ex: Halloween, Noël, Tempête Psi..."
+                            data-model="form.name"
+                            value="{{ this.form.name }}"
+                            autofocus
+                        >
+                        {% if this.validationErrors.name is defined %}
+                            <span class="field-error-msg">{{ this.validationErrors.name }}</span>
+                        {% endif %}
+                    </div>
+
+                    {# Dates row (Début / Fin) #}
+                    <div class="modal-form-row">
+                        <div class="modal-form-group {{ this.validationErrors.startDate is defined ? 'has-error' : '' }}">
+                            <label for="form-event-start-date">
+                                Date de début <span class="optional-tag">(optionnel)</span>
+                            </label>
+                            <input
+                                id="form-event-start-date"
+                                type="datetime-local"
+                                data-model="form.startDate"
+                                value="{{ this.form.startDate }}"
+                            >
+                            {% if this.validationErrors.startDate is defined %}
+                                <span class="field-error-msg">{{ this.validationErrors.startDate }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="modal-form-group {{ this.validationErrors.endDate is defined ? 'has-error' : '' }}">
+                            <label for="form-event-end-date">
+                                Date de fin <span class="optional-tag">(optionnel)</span>
+                            </label>
+                            <input
+                                id="form-event-end-date"
+                                type="datetime-local"
+                                data-model="form.endDate"
+                                value="{{ this.form.endDate }}"
+                            >
+                            {% if this.validationErrors.endDate is defined %}
+                                <span class="field-error-msg">{{ this.validationErrors.endDate }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# Actif toggle #}
+                    <div class="modal-form-group modal-toggle-group">
+                        <div class="toggle-row">
+                            <div class="toggle-label-col">
+                                <label for="form-event-active">Statut de l'événement (Actif)</label>
+                                <small class="field-hint">Active ou désactive la disponibilité de cet événement et de ses quêtes associées.</small>
+                            </div>
+                            <label class="toggle-switch" for="form-event-active">
+                                <input
+                                    id="form-event-active"
+                                    type="checkbox"
+                                    data-model="form.active"
+                                    {{ this.form.active ? 'checked' : '' }}
+                                >
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-status-text">{{ this.form.active ? 'Actif' : 'Inactif' }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    {# Description field #}
+                    <div class="modal-form-group">
+                        <label for="form-event-description">
+                            Description <span class="optional-tag">(optionnel)</span>
+                        </label>
+                        <textarea
+                            id="form-event-description"
+                            rows="3"
+                            placeholder="Décrivez le contexte et les particularités de l'événement..."
+                            data-model="form.description"
+                        >{{ this.form.description }}</textarea>
+                    </div>
+
+                    {# Tags (multi-select filtered on entityType = event with TomSelect) #}
+                    <div class="modal-form-group">
+                        <label for="form-event-tags">
+                            Tags associés <span class="optional-tag">(filtrés sur entityType = event)</span>
+                        </label>
+
+                        {% if availableTags is not empty %}
+                            <div class="tom-select-container" data-live-ignore>
+                                <select
+                                    id="form-event-tags"
+                                    data-controller="tom-select"
+                                    data-tom-select-placeholder-value="Rechercher et sélectionner des tags d'événement..."
+                                    data-model="norender|form.tags"
+                                    multiple
+                                >
+                                    {% for tag in availableTags %}
+                                        {% set tagIri = tag.apiId ?? ('/tags/' ~ tag.id) %}
+                                        <option value="{{ tagIri }}" {{ tagIri in this.form.tags ? 'selected' : '' }}>
+                                            {{ tag.name }} ({{ tag.slug }})
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <small class="field-hint">Sélectionnez un ou plusieurs tags associés à cet événement.</small>
+                        {% else %}
+                            <div class="empty-tags-notice">
+                                {{ ux_icon('fa-solid:info-circle') }}
+                                <span>Aucun tag de type <code>event</code> n'est disponible. Vous pouvez en créer depuis la <a href="{{ path('admin_tags_list') }}">Gestion des Tags</a>.</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="modal-footer-custom">
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        data-action="live#action"
+                        data-live-action-param="closeModal"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        {{ ux_icon('fa-solid:check') }}
+                        {{ this.form.id ? 'Enregistrer les modifications' : 'Créer l\'événement' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    {# Modal Confirmation Delete #}
+    {% if this.deletingEvent %}
+        <div class="modal-backdrop-custom" data-action="click->live#action" data-live-action-param="cancelDelete"></div>
+        <div class="modal-dialog-custom modal-confirm-danger" role="dialog" aria-modal="true">
+            <div class="modal-header-custom danger-header">
+                <h3>
+                    {{ ux_icon('fa-solid:exclamation-triangle') }} Confirmer la suppression
+                </h3>
+                <button
+                    type="button"
+                    class="modal-close-btn"
+                    data-action="live#action"
+                    data-live-action-param="cancelDelete"
+                >
+                    {{ ux_icon('fa-solid:times') }}
+                </button>
+            </div>
+            <div class="modal-body-custom">
+                <p>
+                    Êtes-vous certain de vouloir supprimer l'événement <strong>« {{ this.deletingEvent.name }} »</strong> ?
+                </p>
+                <p class="text-danger-warning">
+                    {{ ux_icon('fa-solid:info-circle') }} Cette action est irréversible. Les quêtes rattachées à cet événement seront dissociées.
+                </p>
+            </div>
+            <div class="modal-footer-custom">
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    data-action="live#action"
+                    data-live-action-param="cancelDelete"
+                >
+                    Annuler
+                </button>
+                <button
+                    type="button"
+                    class="btn-danger-confirm"
+                    data-action="live#action"
+                    data-live-action-param="executeDelete"
+                >
+                    {{ ux_icon('fa-solid:trash-alt') }} Confirmer la suppression
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+</div>

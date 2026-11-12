@@ -1,0 +1,56 @@
+events:
+  listing:
+    title: "Gestion des Événements"
+    count: "%count% événement au total|%count% événements au total"
+    button:
+      add: "Créer un événement"
+      reset: "Réinitialiser"
+    filters:
+      name: "Nom de l'événement"
+      active: "Statut"
+      all_statuses: "Tous les statuts"
+      active_only: "Actif uniquement"
+      inactive_only: "Inactif uniquement"
+      period: "Période"
+      all_periods: "Toutes les périodes"
+      startDate: "Début (à partir du)"
+      endDate: "Fin (jusqu'au)"
+    header:
+      name: "Nom"
+      startDate: "Date de début"
+      endDate: "Date de fin"
+      active: "Statut"
+      description: "Description courte"
+      actions: "Actions"
+    empty:
+      title: "Aucun événement trouvé"
+      description: "Aucun événement ne correspond à vos critères de recherche."
+    actions:
+      edit: "Modifier"
+      delete: "Supprimer"
+    pagination:
+      info: "Affichage de %start% à %end% sur %total% événements"
+      per_page: "Par page :"
+      previous: "Précédent"
+      next: "Suivant"
+  form:
+    create_title: "Créer un nouvel événement"
+    edit_title: "Modifier l'événement"
+    name: "Nom"
+    name_placeholder: "ex: Halloween, Noël, Tempête Psi..."
+    startDate: "Date de début"
+    endDate: "Date de fin"
+    active: "Statut de l'événement (Actif)"
+    description: "Description"
+    tags: "Tags associés"
+    buttons:
+      cancel: "Annuler"
+      save_create: "Créer l'événement"
+      save_edit: "Enregistrer les modifications"
+  delete:
+    confirm_title: "Confirmer la suppression"
+    confirm_message: "Êtes-vous certain de vouloir supprimer l'événement « %name% » ?"
+    warning: "Cette action est irréversible. Les quêtes rattachées à cet événement seront dissociées."
+    buttons:
+      cancel: "Annuler"
+      confirm: "Confirmer la suppression"
